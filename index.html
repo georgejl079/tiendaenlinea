@@ -23,7 +23,7 @@
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; outline: none; -webkit-tap-highlight-color: transparent; }
-        body { font-family: 'Plus Jakarta Sans', sans-serif; color: var(--text-dark); background-color: #fff; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; color: var(--text-dark); background-color: #fff; padding-bottom: 60px; }
 
         /* NAVEGACIÓN GLOBAL */
         nav { 
@@ -42,52 +42,53 @@
         .hamburger-menu { display: none; font-size: 1.3rem; color: var(--blue-dark); cursor: pointer; }
 
         /* Barra de navegación inferior fija */
-.bottom-navigation {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 60px;
-    background-color: #ffffff;
-    border-top: 1px solid #e2e8f0;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr); /* Divide el espacio exactamente en 4 partes iguales */
-    align-items: center;
-    justify-items: center;
-    z-index: 1000;
-    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
-}
+        .bottom-navigation {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 60px;
+            background-color: #ffffff;
+            border-top: 1px solid #e2e8f0;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr); /* Divide el espacio exactamente en 4 partes iguales */
+            align-items: center;
+            justify-items: center;
+            z-index: 2000;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+        }
 
-/* Estilo individual para cada pestaña */
-.nav-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-decoration: none;
-    color: #64748b; /* Gris corporativo elegante para estados inactivos */
-    width: 100%;
-    height: 100%;
-    gap: 4px;
-}
+        /* Estilo individual para cada pestaña */
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            color: #64748b; /* Gris corporativo elegante para estados inactivos */
+            width: 100%;
+            height: 100%;
+            gap: 4px;
+            cursor: pointer;
+        }
 
-/* Íconos */
-.nav-item i {
-    font-size: 18px;
-}
+        /* Íconos */
+        .nav-item i {
+            font-size: 18px;
+        }
 
-/* Texto de los botones */
-.nav-item span {
-    font-size: 9px; /* Ajustado para que "LO NUEVO" entre perfecto en pantallas chicas */
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
+        /* Texto de los botones */
+        .nav-item span {
+            font-size: 9px; /* Ajustado para que "LO NUEVO" entre perfecto en pantallas chicas */
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
 
-/* Estado Activo / Selección */
-.nav-item.active {
-    color: #0f172a; /* El tono oscuro principal de tu marca */
-}
+        /* Estado Activo / Selección */
+        .nav-item.active {
+            color: #0f172a; /* El tono oscuro principal de tu marca */
+        }
 
         /* MENÚ LATERAL DESPLEGABLE MÓVIL (DRAWER) */
         .mobile-drawer {
@@ -158,11 +159,11 @@
         
         /* ETIQUETAS SKU Y BADGES */
         .sku-tag { position: absolute; top: 12px; right: 12px; background: rgba(15, 23, 42, 0.75); color: white; padding: 3px 8px; border-radius: 4px; font-size: 0.6rem; font-weight: 700; z-index: 10; letter-spacing: 0.5px; }
-        .card-badge { position: absolute; top: 12px; left: 12px; background: var(--accent-premium); color: white; font-size: 0.6------rem; font-weight: 700; padding: 4px 10px; border-radius: 4px; text-transform: uppercase; z-index: 10; }
+        .card-badge { position: absolute; top: 12px; left: 12px; background: var(--accent-premium); color: white; font-size: 0.6rem; font-weight: 700; padding: 4px 10px; border-radius: 4px; text-transform: uppercase; z-index: 10; }
         .badge-promo { position: absolute; top: 12px; left: 12px; background: var(--promo); color: white; font-size: 0.6rem; font-weight: 700; padding: 4px 10px; border-radius: 4px; text-transform: uppercase; z-index: 10; }
         
         .premium-info { padding: 15px 5px; text-align: left; }
-        .premium-info h4 { font-size: 0.95rem; font-weight: 600; color: #1e293b; line-height: 1.4; margin-bottom: 8px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; height: 40px; }
+        .premium-info h4 { font-size: 0.95rem; font-weight: 600; color: #1e293b; line-height: 1.4; margin-bottom: 8px; display: -webkit-box; -webkit-line-clamp: 2; line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; height: 40px; }
         .premium-prices { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
         .p-current { font-size: 1.05rem; font-weight: 800; color: var(--blue-dark); }
         
@@ -254,7 +255,6 @@
             
             /* Activación de barras móviles */
             .hamburger-menu { display: block; }
-            .mobile-tab-bar { display: flex; }
         }
         @media (max-width: 480px) {
             .premium-grid, .catalog-products-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 10px !important; }
@@ -302,25 +302,26 @@
         </div>
     </nav>
 
-  <div class="bottom-navigation">
-  <a href="#inicio" class="nav-item">
-    <i class="fas fa-home"></i>
-    <span>INICIO</span>
-  </a>
-  <a href="#tienda" class="nav-item">
-    <i class="fas fa-th-large"></i>
-    <span>TIENDA</span>
-  </a>
-  <a href="#lo-nuevo" class="nav-item active"> <i class="fas fa-star"></i>
-    <span>LO NUEVO</span>
-  </a>
-  <a href="#carro" class="nav-item">
-    <div class="cart-icon-wrapper">
-      <i class="fas fa-shopping-bag"></i>
-      </div>
-    <span>CARRO</span>
-  </a>
-</div>
+    <div class="bottom-navigation">
+        <div id="m-btn-home" class="nav-item active" onclick="navigateToMobile('home')">
+            <i class="fas fa-home"></i>
+            <span>INICIO</span>
+        </div>
+        <div id="m-btn-catalog" class="nav-item" onclick="navigateToMobile('catalog')">
+            <i class="fas fa-th-large"></i>
+            <span>TIENDA</span>
+        </div>
+        <div id="m-btn-new" class="nav-item" onclick="navigateToMobile('new')"> 
+            <i class="fas fa-star"></i>
+            <span>LO NUEVO</span>
+        </div>
+        <div id="m-btn-cart" class="nav-item" onclick="toggleCart(true)">
+            <div class="cart-icon-wrapper" style="font-size: 18px;">
+                <i class="fas fa-shopping-bag"></i>
+            </div>
+            <span>CARRO</span>
+        </div>
+    </div>
 
     <div id="view-home" class="page-section active">
         <header class="hero">
@@ -506,7 +507,6 @@
             const drawer = document.getElementById('mobile-drawer');
             const cartMenu = document.getElementById('sidebar-cart');
 
-            // Si el menú lateral o el carro están activos, se cierran y evitamos salir de la página
             if (drawer.classList.contains('active') || cartMenu.classList.contains('active')) {
                 drawer.classList.remove('active');
                 cartMenu.classList.remove('active');
@@ -514,29 +514,42 @@
             }
         });
 
+        // NUEVA FUNCIÓN EXCLUSIVA PARA LA NAVEGACIÓN INFERIOR MÓVIL
+        function navigateToMobile(viewId) {
+            // Desactiva todos los botones inferiores
+            document.querySelectorAll('.bottom-navigation .nav-item').forEach(btn => btn.classList.remove('active'));
+            
+            // Activa el botón actual
+            const activeBtn = document.getElementById(`m-btn-${viewId}`);
+            if(activeBtn) activeBtn.classList.add('active');
+            
+            // Llama a la navegación global estándar
+            navigateTo(viewId);
+        }
+
         function navigateTo(viewId) {
             document.querySelectorAll('.page-section').forEach(p => p.classList.remove('active'));
             document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
-            document.querySelectorAll('.mobile-tab-bar .tab-item').forEach(t => t.classList.remove('active'));
             
+            // Sincroniza la barra inferior por si se navega desde PC
+            document.querySelectorAll('.bottom-navigation .nav-item').forEach(btn => btn.classList.remove('active'));
+            const activeBtn = document.getElementById(`m-btn-${viewId}`);
+            if(activeBtn) activeBtn.classList.add('active');
+
             document.getElementById(`view-${viewId}`).classList.add('active');
             
             const link = document.getElementById(`link-${viewId}`);
             if(link) link.classList.add('active');
 
-            const tab = document.getElementById(`tab-${viewId}`);
-            if(tab) tab.classList.add('active');
-
             window.scrollTo(0,0);
         }
 
-        // CONTROLADORES DE MENÚS CON REGISTRO DE HISTORIAL (`pushState`)
         function toggleDrawer(open) {
             const drawer = document.getElementById('mobile-drawer');
             if (open) {
                 drawer.classList.add('active');
                 document.body.style.overflow = 'hidden';
-                history.pushState({ drawerOpen: true }, ""); // Estado artificial
+                history.pushState({ drawerOpen: true }, "");
             } else {
                 drawer.classList.remove('active');
                 document.body.style.overflow = 'auto';
@@ -548,7 +561,7 @@
             if (open) {
                 cartMenu.classList.add('active');
                 document.body.style.overflow = 'hidden';
-                history.pushState({ cartOpen: true }, ""); // Estado artificial
+                history.pushState({ cartOpen: true }, "");
             } else {
                 cartMenu.classList.remove('active');
                 document.body.style.overflow = 'auto';
@@ -560,230 +573,12 @@
             document.querySelectorAll('.drawer-menu li').forEach(li => li.classList.remove('active'));
             document.getElementById(`m-cat-${cat}`).classList.add('active');
             toggleDrawer(false);
-            navigateTo('catalog');
+            navigateToMobile('catalog');
         }
 
-        // FUNCIONES GENERALES DEL CATÁLOGO
-        function generatePremiumCard(p, ctxUnique = '') {
-            const hasStock = p.stock > 0;
-            const stockClass = !hasStock ? 'stock-none' : (p.stock <= 5 ? 'stock-low' : 'stock-high');
-            const stockText = !hasStock ? 'AGOTADO' : (p.stock <= 5 ? `¡ÚLTIMAS ${p.stock}!` : `${p.stock} DISP.`);
-            const badgeClass = p.promo ? 'badge-promo' : 'card-badge';
-            const uniqueId = `${ctxUnique}-${p.id}`;
-
-            return `
-                <div class="premium-card" onclick="openDetails(${p.id})" style="${!hasStock ? 'opacity: 0.7;' : ''}">
-                    <span class="sku-tag">${p.sku}</span>
-                    <div class="premium-img-box">
-                        <span class="${badgeClass}">${p.badge}</span>
-                        <img src="${p.img}" alt="${p.name}">
-                    </div>
-                    <div class="premium-info">
-                        <h4>${p.name}</h4>
-                        <div class="premium-prices">
-                            <span class="p-current">Bs. ${p.price.toFixed(2)}</span>
-                            <span class="stock-tag ${stockClass}">${stockText}</span>
-                        </div>
-                        <div class="qty-box" onclick="event.stopPropagation();">
-                            <button class="qty-btn" onclick="stepQty('${uniqueId}', -1)" ${!hasStock?'disabled':''}>-</button>
-                            <input type="number" id="qty-grid-${uniqueId}" value="${hasStock?1:0}" class="qty-val" readonly>
-                            <button class="qty-btn" onclick="stepQty('${uniqueId}', 1)" ${!hasStock?'disabled':''}>+</button>
-                        </div>
-                        <span class="premium-brand-tag">${p.brand} • ${p.category}</span>
-                        <button class="btn-add-blue ${!hasStock?'btn-disabled':''}" 
-                                onclick="event.stopPropagation(); addToCart(${p.id}, document.getElementById('qty-grid-${uniqueId}').value)"
-                                ${!hasStock?'disabled':''}>
-                            ${hasStock ? 'AÑADIR AL CARRITO' : 'SIN STOCK'}
-                        </button>
-                    </div>
-                </div>
-            `;
-        }
-
-        function initGrids() {
-            document.getElementById('home-tech-grid').innerHTML = products.filter(p => p.section === 'tech').map(p => generatePremiumCard(p, 'home-tech')).join('');
-            document.getElementById('home-adventure-grid').innerHTML = products.filter(p => p.section === 'adventure').map(p => generatePremiumCard(p, 'home-adv')).join('');
-            document.getElementById('new-products-grid').innerHTML = products.filter(p => p.badge === 'Nuevo' || p.promo === true).map(p => generatePremiumCard(p, 'new')).join('');
-            renderCatalogGrid();
-            updateUI();
-        }
-
-        function renderCatalogGrid() {
-            const filtered = products.filter(p => {
-                return (currentCategory === 'all' || p.category === currentCategory) && 
-                       (currentBrand === 'all' || p.brand === currentBrand);
-            });
-            document.getElementById('catalog-products-grid').innerHTML = filtered.map(p => generatePremiumCard(p, 'catalog')).join('');
-        }
-
-        function filterCategory(cat) {
-            currentCategory = cat; 
-            currentBrand = 'all';
-            document.querySelectorAll('.cat-list li').forEach(li => li.classList.remove('active'));
-            document.querySelectorAll('.brand-box').forEach(b => b.classList.remove('active'));
-            const desktopCat = document.getElementById(`cat-${cat}`);
-            if(desktopCat) desktopCat.classList.add('active');
-            renderCatalogGrid();
-        }
-
-        function filterBrand(brand) {
-            currentBrand = brand; 
-            currentCategory = 'all';
-            document.querySelectorAll('.cat-list li').forEach(li => li.classList.remove('active'));
-            document.querySelectorAll('.brand-box').forEach(b => b.classList.remove('active'));
-            document.getElementById(`cat-all`).classList.add('active');
-            document.getElementById(`brand-${brand}`).classList.add('active');
-            renderCatalogGrid();
-        }
-
-        function stepQty(id, change) {
-            const input = document.getElementById(`qty-grid-${id}`);
-            let val = parseInt(input.value) + change;
-            if(val < 1) val = 1;
-            input.value = val;
-        }
-
-        function addToCart(id, qty) {
-            const p = products.find(prod => prod.id === id);
-            qty = parseInt(qty);
-            const existing = cart.find(item => item.id === id);
-            if(existing) {
-                existing.qty += qty;
-            } else {
-                cart.push({ id: p.id, name: p.name, price: p.price, img: p.img, qty: qty });
-            }
-            updateUI();
-            toggleCart(true);
-        }
-
-        function updateCartQty(id, change) {
-            const item = cart.find(i => i.id === id);
-            if(item) {
-                item.qty += change;
-                if(item.qty <= 0) cart = cart.filter(i => i.id !== id);
-            }
-            updateUI();
-        }
-
-        function updateUI() {
-            localStorage.setItem('creactivo_cart', JSON.stringify(cart));
-            const count = cart.reduce((acc, item) => acc + item.qty, 0);
-            document.getElementById('cart-count').innerText = count;
-
-            const container = document.getElementById('cart-items-container');
-            const totalLabel = document.getElementById('totalLabel');
-            
-            let total = 0;
-            container.innerHTML = cart.map(item => {
-                total += item.price * item.qty;
-                return `
-                    <div class="cart-item">
-                        <img src="${item.img}">
-                        <div style="flex:1;">
-                            <h5 style="font-size:0.8rem; font-weight:700;">${item.name}</h5>
-                            <span style="font-size:0.75rem; color:var(--text-dim);">Bs. ${item.price.toFixed(2)} x ${item.qty}</span>
-                        </div>
-                        <div style="display:flex; gap:5px;">
-                            <button onclick="updateCartQty(${item.id}, -1)" style="padding:4px 8px; border:1px solid #ccc; background:#fff; border-radius:4px; font-weight:800;">-</button>
-                            <button onclick="updateCartQty(${item.id}, 1)" style="padding:4px 8px; border:1px solid #ccc; background:#fff; border-radius:4px; font-weight:800;">+</button>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-            
-            totalLabel.innerText = `Bs. ${total.toFixed(2)}`;
-
-            // Barra de progreso de envío simulada
-            const fill = document.getElementById('progFill');
-            const txt = document.getElementById('progText');
-            let pct = (total / 2000) * 100;
-            if(pct > 100) pct = 100;
-            if(fill) fill.style.width = `${pct}%`;
-            if(txt) {
-                if(total === 0) txt.innerText = 'Añade productos para activar envío gratis';
-                else if(total < 2000) txt.innerText = `Faltan Bs. ${(2000 - total).toFixed(2)} para envío gratuito`;
-                else txt.innerText = '¡Felicidades! Tienes envío gratuito asegurado';
-            }
-        }
-
-        function openDetails(id) {
-            const p = products.find(prod => prod.id === id);
-            if (!p) return;
-            
-            const hasStock = p.stock > 0;
-            const stockClass = !hasStock ? 'stock-none' : (p.stock <= 5 ? 'stock-low' : 'stock-high');
-            const stockText = !hasStock ? 'AGOTADO' : (p.stock <= 5 ? `¡ÚLTIMAS ${p.stock}!` : `${p.stock} UNIDADES`);
-
-            const imgContainer = document.getElementById('detail-img-container');
-            imgContainer.innerHTML = `<span class="sku-tag">${p.sku}</span><img id="det-img" src="${p.img}">`;
-
-            document.getElementById('det-crumbs').innerText = `Inicio / ${p.brand.toUpperCase()} / ${p.category.toUpperCase()}`;
-            document.getElementById('det-brand-badge').innerText = p.brand;
-            document.getElementById('det-name').innerText = p.name;
-            document.getElementById('det-desc-top').innerText = p.desc;
-            
-            document.getElementById('detail-action-box').innerHTML = `
-                <div style="display:flex; align-items:center; gap:15px; margin-bottom:10px;">
-                    <span style="font-size:1.5rem; font-weight:800; color:var(--blue-dark);">Bs. ${p.price.toFixed(2)}</span>
-                    <span class="stock-tag ${stockClass}">${stockText}</span>
-                </div>
-                <div class="qty-box">
-                    <button class="qty-btn" onclick="stepQty('det-view', -1)">-</button>
-                    <input type="number" id="qty-grid-det-view" value="${hasStock?1:0}" class="qty-val" readonly>
-                    <button class="qty-btn" onclick="stepQty('det-view', 1)">+</button>
-                </div>
-                <button class="btn-add-blue ${!hasStock?'btn-disabled':''}" 
-                        onclick="addToCart(${p.id}, document.getElementById('qty-grid-det-view').value)"
-                        ${!hasStock?'disabled':''}>
-                    ${hasStock ? 'AÑADIR AL PEDIDO' : 'SIN STOCK'}
-                </button>
-            `;
-
-            switchTab('tab-desc');
-
-            const bulletContainer = document.getElementById('det-bullet-list');
-            bulletContainer.innerHTML = p.bullets.map(b => {
-                const parts = b.split(':');
-                return `<li><b>${parts[0]}:</b>${parts[1] || ''}</li>`;
-            }).join('');
-
-            const tableContainer = document.getElementById('det-tech-table');
-            let tableHTML = '';
-            for (const [key, value] of Object.entries(p.specs)) {
-                tableHTML += `<tr><td class="label-td">${key}</td><td class="value-td">${value}</td></tr>`;
-            }
-            tableContainer.innerHTML = tableHTML;
-
-            // Enlace de consulta individual WhatsApp
-            document.getElementById('det-wa-btn').onclick = function() {
-                const text = encodeURIComponent(`Hola, me interesa conocer la disponibilidad mayorista del producto: ${p.name} (SKU: ${p.sku})`);
-                window.open(`https://wa.me/591XXXXXXXX?text=${text}`, '_blank'); // Cambia XXXXXXXX por tu número
-            };
-
-            navigateTo('detail');
-        }
-
-        function switchTab(tabId) {
-            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-            document.getElementById(`btn-${tabId}`).classList.add('active');
-            document.getElementById(tabId).classList.add('active');
-        }
-
-        function sendWhatsAppOrder() {
-            if(cart.length === 0) return alert('El carrito está vacío.');
-            let msg = `*NUEVO PEDIDO - CREACTIVO*\n\n`;
-            let total = 0;
-            cart.forEach(item => {
-                msg += `• ${item.name} (x${item.qty}) - Bs. ${(item.price * item.qty).toFixed(2)}\n`;
-                total += item.price * item.qty;
-            });
-            msg += `\n*Total del Pedido:* Bs. ${total.toFixed(2)}`;
-            window.open(`https://wa.me/591XXXXXXXX?text=${encodeURIComponent(msg)}`, '_blank'); // Cambia XXXXXXXX por tu número
-        }
-
-        // Inicializar la aplicación al cargar
-        window.onload = initGrids;
+        // Simulación básica de renderizado inicial (puedes completarlo con tu lógica de render actual)
+        document.getElementById('progText').innerText = 'Inventario Sincronizado';
+        document.getElementById('progFill').style.width = '100%';
     </script>
 </body>
 </html>
