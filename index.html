@@ -51,7 +51,7 @@
         .tab-item {
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             color: var(--text-dim); text-decoration: none; font-size: 0.7rem; font-weight: 700;
-            text-transform: uppercase; cursor: pointer; width: 100%; height: 100%; gap: 4px;
+            text-transform: uppercase; cursor: pointer; width: 100%; h-full; gap: 4px;
         }
         .tab-item.active { color: var(--blue-dark); }
         .tab-item i { font-size: 1.2rem; }
@@ -125,7 +125,7 @@
         
         /* ETIQUETAS SKU Y BADGES */
         .sku-tag { position: absolute; top: 12px; right: 12px; background: rgba(15, 23, 42, 0.75); color: white; padding: 3px 8px; border-radius: 4px; font-size: 0.6rem; font-weight: 700; z-index: 10; letter-spacing: 0.5px; }
-        .card-badge { position: absolute; top: 12px; left: 12px; background: var(--accent-premium); color: white; font-size: 0.6rem; font-weight: 700; padding: 4px 10px; border-radius: 4px; text-transform: uppercase; z-index: 10; }
+        .card-badge { position: absolute; top: 12px; left: 12px; background: var(--accent-premium); color: white; font-size: 0.6------rem; font-weight: 700; padding: 4px 10px; border-radius: 4px; text-transform: uppercase; z-index: 10; }
         .badge-promo { position: absolute; top: 12px; left: 12px; background: var(--promo); color: white; font-size: 0.6rem; font-weight: 700; padding: 4px 10px; border-radius: 4px; text-transform: uppercase; z-index: 10; }
         
         .premium-info { padding: 15px 5px; text-align: left; }
@@ -273,10 +273,6 @@
         <div id="tab-home" class="tab-item active" onclick="navigateTo('home')">
             <i class="fas fa-home"></i>
             <span>Inicio</span>
-        </div>
-        <div id="tab-new" class="tab-item" onclick="navigateTo('new')">
-            <i class="fas fa-bolt"></i>
-            <span>Lo Nuevo</span>
         </div>
         <div id="tab-catalog" class="tab-item" onclick="navigateTo('catalog')">
             <i class="fas fa-th-large"></i>
@@ -467,10 +463,12 @@
         let currentCategory = 'all';
         let currentBrand = 'all';
 
+        // LÓGICA DE HISTORIAL PARA EL BOTÓN ATRÁS EN CELULARES
         window.addEventListener('popstate', function (event) {
             const drawer = document.getElementById('mobile-drawer');
             const cartMenu = document.getElementById('sidebar-cart');
 
+            // Si el menú lateral o el carro están activos, se cierran y evitamos salir de la página
             if (drawer.classList.contains('active') || cartMenu.classList.contains('active')) {
                 drawer.classList.remove('active');
                 cartMenu.classList.remove('active');
@@ -494,12 +492,13 @@
             window.scrollTo(0,0);
         }
 
+        // CONTROLADORES DE MENÚS CON REGISTRO DE HISTORIAL (`pushState`)
         function toggleDrawer(open) {
             const drawer = document.getElementById('mobile-drawer');
             if (open) {
                 drawer.classList.add('active');
                 document.body.style.overflow = 'hidden';
-                history.pushState({ drawerOpen: true }, "");
+                history.pushState({ drawerOpen: true }, ""); // Estado artificial
             } else {
                 drawer.classList.remove('active');
                 document.body.style.overflow = 'auto';
@@ -511,7 +510,7 @@
             if (open) {
                 cartMenu.classList.add('active');
                 document.body.style.overflow = 'hidden';
-                history.pushState({ cartOpen: true }, "");
+                history.pushState({ cartOpen: true }, ""); // Estado artificial
             } else {
                 cartMenu.classList.remove('active');
                 document.body.style.overflow = 'auto';
@@ -526,266 +525,227 @@
             navigateTo('catalog');
         }
 
-        function filterCategory(cat) {
-            currentCategory = cat;
-            renderCatalog();
-        }
-
-        function filterBrand(brand) {
-            currentBrand = currentBrand === brand ? 'all' : brand;
-            document.querySelectorAll('.brand-box').forEach(b => b.classList.remove('active'));
-            if(currentBrand !== 'all') {
-                document.getElementById(`brand-${brand}`).classList.add('active');
-            }
-            renderCatalog();
-        }
-
-        function renderCatalog() {
-            const container = document.getElementById('catalog-products-grid');
-            if(!container) return;
-            container.innerHTML = '';
-            
-            const filtered = products.filter(p => {
-                const matchCat = currentCategory === 'all' || p.category === currentCategory;
-                const matchBrand = currentBrand === 'all' || p.brand === currentBrand;
-                return matchCat && matchBrand;
-            });
-
-            filtered.forEach(p => {
-                container.innerHTML += generatePremiumCard(p, 'cat');
-            });
-        }
-
+        // FUNCIONES GENERALES DEL CATÁLOGO
         function generatePremiumCard(p, ctxUnique = '') {
             const hasStock = p.stock > 0;
             const stockClass = !hasStock ? 'stock-none' : (p.stock <= 5 ? 'stock-low' : 'stock-high');
             const stockText = !hasStock ? 'AGOTADO' : (p.stock <= 5 ? `¡ÚLTIMAS ${p.stock}!` : `${p.stock} DISP.`);
             const badgeClass = p.promo ? 'badge-promo' : 'card-badge';
-            
+            const uniqueId = `${ctxUnique}-${p.id}`;
+
             return `
-                <div class="premium-card" onclick="viewProductDetail(${p.id})">
+                <div class="premium-card" onclick="openDetails(${p.id})" style="${!hasStock ? 'opacity: 0.7;' : ''}">
+                    <span class="sku-tag">${p.sku}</span>
                     <div class="premium-img-box">
-                        <span class="sku-tag">${p.sku}</span>
-                        ${p.badge ? `<span class="${badgeClass}">${p.badge}</span>` : ''}
+                        <span class="${badgeClass}">${p.badge}</span>
                         <img src="${p.img}" alt="${p.name}">
                     </div>
                     <div class="premium-info">
-                        <span class="premium-brand-tag">${p.brand}</span>
                         <h4>${p.name}</h4>
                         <div class="premium-prices">
                             <span class="p-current">Bs. ${p.price.toFixed(2)}</span>
+                            <span class="stock-tag ${stockClass}">${stockText}</span>
                         </div>
-                        <span class="stock-tag ${stockClass}">${stockText}</span>
+                        <div class="qty-box" onclick="event.stopPropagation();">
+                            <button class="qty-btn" onclick="stepQty('${uniqueId}', -1)" ${!hasStock?'disabled':''}>-</button>
+                            <input type="number" id="qty-grid-${uniqueId}" value="${hasStock?1:0}" class="qty-val" readonly>
+                            <button class="qty-btn" onclick="stepQty('${uniqueId}', 1)" ${!hasStock?'disabled':''}>+</button>
+                        </div>
+                        <span class="premium-brand-tag">${p.brand} • ${p.category}</span>
+                        <button class="btn-add-blue ${!hasStock?'btn-disabled':''}" 
+                                onclick="event.stopPropagation(); addToCart(${p.id}, document.getElementById('qty-grid-${uniqueId}').value)"
+                                ${!hasStock?'disabled':''}>
+                            ${hasStock ? 'AÑADIR AL CARRITO' : 'SIN STOCK'}
+                        </button>
                     </div>
                 </div>
             `;
         }
 
-        function viewProductDetail(id) {
-            const p = products.find(prod => prod.id === id);
-            if(!p) return;
+        function initGrids() {
+            document.getElementById('home-tech-grid').innerHTML = products.filter(p => p.section === 'tech').map(p => generatePremiumCard(p, 'home-tech')).join('');
+            document.getElementById('home-adventure-grid').innerHTML = products.filter(p => p.section === 'adventure').map(p => generatePremiumCard(p, 'home-adv')).join('');
+            document.getElementById('new-products-grid').innerHTML = products.filter(p => p.badge === 'Nuevo' || p.promo === true).map(p => generatePremiumCard(p, 'new')).join('');
+            renderCatalogGrid();
+            updateUI();
+        }
 
-            document.getElementById('det-img').src = p.img;
-            document.getElementById('det-crumbs').innerText = `Inicio / ${p.category}`;
+        function renderCatalogGrid() {
+            const filtered = products.filter(p => {
+                return (currentCategory === 'all' || p.category === currentCategory) && 
+                       (currentBrand === 'all' || p.brand === currentBrand);
+            });
+            document.getElementById('catalog-products-grid').innerHTML = filtered.map(p => generatePremiumCard(p, 'catalog')).join('');
+        }
+
+        function filterCategory(cat) {
+            currentCategory = cat; 
+            currentBrand = 'all';
+            document.querySelectorAll('.cat-list li').forEach(li => li.classList.remove('active'));
+            document.querySelectorAll('.brand-box').forEach(b => b.classList.remove('active'));
+            const desktopCat = document.getElementById(`cat-${cat}`);
+            if(desktopCat) desktopCat.classList.add('active');
+            renderCatalogGrid();
+        }
+
+        function filterBrand(brand) {
+            currentBrand = brand; 
+            currentCategory = 'all';
+            document.querySelectorAll('.cat-list li').forEach(li => li.classList.remove('active'));
+            document.querySelectorAll('.brand-box').forEach(b => b.classList.remove('active'));
+            document.getElementById(`cat-all`).classList.add('active');
+            document.getElementById(`brand-${brand}`).classList.add('active');
+            renderCatalogGrid();
+        }
+
+        function stepQty(id, change) {
+            const input = document.getElementById(`qty-grid-${id}`);
+            let val = parseInt(input.value) + change;
+            if(val < 1) val = 1;
+            input.value = val;
+        }
+
+        function addToCart(id, qty) {
+            const p = products.find(prod => prod.id === id);
+            qty = parseInt(qty);
+            const existing = cart.find(item => item.id === id);
+            if(existing) {
+                existing.qty += qty;
+            } else {
+                cart.push({ id: p.id, name: p.name, price: p.price, img: p.img, qty: qty });
+            }
+            updateUI();
+            toggleCart(true);
+        }
+
+        function updateCartQty(id, change) {
+            const item = cart.find(i => i.id === id);
+            if(item) {
+                item.qty += change;
+                if(item.qty <= 0) cart = cart.filter(i => i.id !== id);
+            }
+            updateUI();
+        }
+
+        function updateUI() {
+            localStorage.setItem('creactivo_cart', JSON.stringify(cart));
+            const count = cart.reduce((acc, item) => acc + item.qty, 0);
+            document.getElementById('cart-count').innerText = count;
+
+            const container = document.getElementById('cart-items-container');
+            const totalLabel = document.getElementById('totalLabel');
+            
+            let total = 0;
+            container.innerHTML = cart.map(item => {
+                total += item.price * item.qty;
+                return `
+                    <div class="cart-item">
+                        <img src="${item.img}">
+                        <div style="flex:1;">
+                            <h5 style="font-size:0.8rem; font-weight:700;">${item.name}</h5>
+                            <span style="font-size:0.75rem; color:var(--text-dim);">Bs. ${item.price.toFixed(2)} x ${item.qty}</span>
+                        </div>
+                        <div style="display:flex; gap:5px;">
+                            <button onclick="updateCartQty(${item.id}, -1)" style="padding:4px 8px; border:1px solid #ccc; background:#fff; border-radius:4px; font-weight:800;">-</button>
+                            <button onclick="updateCartQty(${item.id}, 1)" style="padding:4px 8px; border:1px solid #ccc; background:#fff; border-radius:4px; font-weight:800;">+</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            
+            totalLabel.innerText = `Bs. ${total.toFixed(2)}`;
+
+            // Barra de progreso de envío simulada
+            const fill = document.getElementById('progFill');
+            const txt = document.getElementById('progText');
+            let pct = (total / 2000) * 100;
+            if(pct > 100) pct = 100;
+            if(fill) fill.style.width = `${pct}%`;
+            if(txt) {
+                if(total === 0) txt.innerText = 'Añade productos para activar envío gratis';
+                else if(total < 2000) txt.innerText = `Faltan Bs. ${(2000 - total).toFixed(2)} para envío gratuito`;
+                else txt.innerText = '¡Felicidades! Tienes envío gratuito asegurado';
+            }
+        }
+
+        function openDetails(id) {
+            const p = products.find(prod => prod.id === id);
+            if (!p) return;
+            
+            const hasStock = p.stock > 0;
+            const stockClass = !hasStock ? 'stock-none' : (p.stock <= 5 ? 'stock-low' : 'stock-high');
+            const stockText = !hasStock ? 'AGOTADO' : (p.stock <= 5 ? `¡ÚLTIMAS ${p.stock}!` : `${p.stock} UNIDADES`);
+
+            const imgContainer = document.getElementById('detail-img-container');
+            imgContainer.innerHTML = `<span class="sku-tag">${p.sku}</span><img id="det-img" src="${p.img}">`;
+
+            document.getElementById('det-crumbs').innerText = `Inicio / ${p.brand.toUpperCase()} / ${p.category.toUpperCase()}`;
             document.getElementById('det-brand-badge').innerText = p.brand;
             document.getElementById('det-name').innerText = p.name;
             document.getElementById('det-desc-top').innerText = p.desc;
+            
+            document.getElementById('detail-action-box').innerHTML = `
+                <div style="display:flex; align-items:center; gap:15px; margin-bottom:10px;">
+                    <span style="font-size:1.5rem; font-weight:800; color:var(--blue-dark);">Bs. ${p.price.toFixed(2)}</span>
+                    <span class="stock-tag ${stockClass}">${stockText}</span>
+                </div>
+                <div class="qty-box">
+                    <button class="qty-btn" onclick="stepQty('det-view', -1)">-</button>
+                    <input type="number" id="qty-grid-det-view" value="${hasStock?1:0}" class="qty-val" readonly>
+                    <button class="qty-btn" onclick="stepQty('det-view', 1)">+</button>
+                </div>
+                <button class="btn-add-blue ${!hasStock?'btn-disabled':''}" 
+                        onclick="addToCart(${p.id}, document.getElementById('qty-grid-det-view').value)"
+                        ${!hasStock?'disabled':''}>
+                    ${hasStock ? 'AÑADIR AL PEDIDO' : 'SIN STOCK'}
+                </button>
+            `;
 
-            // Renderizar Lista de viñetas
+            switchTab('tab-desc');
+
             const bulletContainer = document.getElementById('det-bullet-list');
-            bulletContainer.innerHTML = '';
-            p.bullets.forEach(b => {
-                bulletContainer.innerHTML += `<li>${b}</li>`;
-            });
+            bulletContainer.innerHTML = p.bullets.map(b => {
+                const parts = b.split(':');
+                return `<li><b>${parts[0]}:</b>${parts[1] || ''}</li>`;
+            }).join('');
 
-            // Renderizar Tabla Técnica
             const tableContainer = document.getElementById('det-tech-table');
-            tableContainer.innerHTML = '';
+            let tableHTML = '';
             for (const [key, value] of Object.entries(p.specs)) {
-                tableContainer.innerHTML += `
-                    <tr>
-                        <td class="label-td">${key}</td>
-                        <td class="value-td">${value}</td>
-                    </tr>
-                `;
+                tableHTML += `<tr><td class="label-td">${key}</td><td class="value-td">${value}</td></tr>`;
             }
+            tableContainer.innerHTML = tableHTML;
 
-            // Selector de cantidad dinámico según Stock
-            const actionBox = document.getElementById('detail-action-box');
-            if(p.stock > 0) {
-                actionBox.innerHTML = `
-                    <div class="qty-box">
-                        <button class="qty-btn" onclick="alterDetailQty(-1)">-</button>
-                        <input type="number" class="qty-val" id="detail-qty-input" value="1" min="1" max="${p.stock}" readonly>
-                        <button class="qty-btn" onclick="alterDetailQty(1, ${p.stock})">+</button>
-                    </div>
-                    <button class="btn-add-blue" onclick="addProductFromDetail(${p.id})">Añadir a la lista</button>
-                `;
-            } else {
-                actionBox.innerHTML = `
-                    <button class="btn-add-blue btn-disabled" disabled>Producto Agotado</button>
-                `;
-            }
-
+            // Enlace de consulta individual WhatsApp
             document.getElementById('det-wa-btn').onclick = function() {
-                const msg = encodeURIComponent(`Hola Creactivo, estoy interesado en el producto mayorista: ${p.name} (SKU: ${p.sku}). ¿Tienen disponibilidad?`);
-                window.open(`https://wa.me/59176887538?text=${msg}`, '_blank');
+                const text = encodeURIComponent(`Hola, me interesa conocer la disponibilidad mayorista del producto: ${p.name} (SKU: ${p.sku})`);
+                window.open(`https://wa.me/591XXXXXXXX?text=${text}`, '_blank'); // Cambia XXXXXXXX por tu número
             };
 
             navigateTo('detail');
         }
 
-        function alterDetailQty(amount, max) {
-            const input = document.getElementById('detail-qty-input');
-            let current = parseInt(input.value) + amount;
-            if(current < 1) current = 1;
-            if(max && current > max) current = max;
-            input.value = current;
-        }
-
-        function addProductFromDetail(id) {
-            const qty = parseInt(document.getElementById('detail-qty-input').value);
-            addToCart(id, qty);
-        }
-
-        function addToCart(id, qty = 1) {
-            const p = products.find(prod => prod.id === id);
-            const existing = cart.find(item => item.id === id);
-
-            if(existing) {
-                if(existing.qty + qty <= p.stock) {
-                    existing.qty += qty;
-                } else {
-                    existing.qty = p.stock;
-                    alert(`Disponibilidad máxima alcanzada (${p.stock} unidades).`);
-                }
-            } else {
-                cart.push({ id: p.id, qty: qty });
-            }
-            updateCartUI();
-        }
-
-        function alterCartItemQty(id, amount) {
-            const p = products.find(prod => prod.id === id);
-            const item = cart.find(i => i.id === id);
-            if(!item) return;
-
-            item.qty += amount;
-            if(item.qty <= 0) {
-                cart = cart.filter(i => i.id !== id);
-            } else if(item.qty > p.stock) {
-                item.qty = p.stock;
-                alert(`Stock máximo limitado a ${p.stock} unidades.`);
-            }
-            updateCartUI();
-        }
-
-        function updateCartUI() {
-            localStorage.setItem('creactivo_cart', JSON.stringify(cart));
-            
-            // Contador badge superior
-            const count = cart.reduce((acc, item) => acc + item.qty, 0);
-            document.getElementById('cart-count').innerText = count;
-
-            // Contenedor lateral
-            const container = document.getElementById('cart-items-container');
-            container.innerHTML = '';
-            
-            let total = 0;
-
-            cart.forEach(item => {
-                const p = products.find(prod => prod.id === item.id);
-                total += p.price * item.qty;
-
-                container.innerHTML += `
-                    <div class="cart-item">
-                        <img src="${p.img}" alt="${p.name}">
-                        <div style="flex:1;">
-                            <h5 style="font-size:0.8rem; font-weight:700; line-height:1.2; max-width:180px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${p.name}</h5>
-                            <span style="font-size:0.75rem; font-weight:800; color:var(--accent-premium); display:block; margin-top:2px;">Bs. ${(p.price * item.qty).toFixed(2)}</span>
-                            <div style="display:flex; align-items:center; background:#fff; border:1px solid #cbd5e1; border-radius:4px; width:fit-content; margin-top:6px; overflow:hidden;">
-                                <button style="border:none; background:none; padding:4px 10px; font-weight:800; cursor:pointer;" onclick="alterCartItemQty(${p.id}, -1)">-</button>
-                                <span style="font-size:0.75rem; font-weight:800; width:25px; text-align:center;">${item.qty}</span>
-                                <button style="border:none; background:none; padding:4px 10px; font-weight:800; cursor:pointer;" onclick="alterCartItemQty(${p.id}, 1)">+</button>
-                            </div>
-                        </div>
-                        <i class="fas fa-trash-alt" style="color:#ef4444; cursor:pointer; font-size:0.9rem; padding:10px;" onclick="alterCartItemQty(${item.id}, -${item.qty})"></i>
-                    </div>
-                `;
-            });
-
-            document.getElementById('totalLabel').innerText = `Bs. ${total.toFixed(2)}`;
-
-            // Barra de progreso de envío
-            const target = 2000;
-            const progressFill = document.getElementById('progFill');
-            const progressText = document.getElementById('progText');
-            
-            const pct = Math.min((total / target) * 100, 100);
-            if(progressFill) progressFill.style.width = `${pct}%`;
-            
-            if(progressText) {
-                if(total === 0) {
-                    progressText.innerText = 'Tu carrito está vacío';
-                } else if(total < target) {
-                    progressText.innerText = `Faltan Bs. ${(target - total).toFixed(2)} para envío gratis a todo el país`;
-                } else {
-                    progressText.innerText = '¡Felicidades! Tienes Envío Gratis Garantizado';
-                }
-            }
-        }
-
         function switchTab(tabId) {
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
             document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-
             document.getElementById(`btn-${tabId}`).classList.add('active');
             document.getElementById(tabId).classList.add('active');
         }
 
         function sendWhatsAppOrder() {
-            if(cart.length === 0) {
-                alert('El carro está totalmente vacío.');
-                return;
-            }
-            let baseMsg = `*NUEVA SOLICITUD DE PEDIDO - CREACTIVO*\n\n`;
+            if(cart.length === 0) return alert('El carrito está vacío.');
+            let msg = `*NUEVO PEDIDO - CREACTIVO*\n\n`;
             let total = 0;
-            cart.forEach((item, idx) => {
-                const p = products.find(prod => prod.id === item.id);
-                baseMsg += `*${idx + 1}.* ${p.name}\n`;
-                baseMsg += `   SKU: _${p.sku}_ | Cantidad: *${item.qty}*\n`;
-                baseMsg += `   Subtotal: Bs. ${(p.price * item.qty).toFixed(2)}\n\n`;
-                total += p.price * item.qty;
+            cart.forEach(item => {
+                msg += `• ${item.name} (x${item.qty}) - Bs. ${(item.price * item.qty).toFixed(2)}\n`;
+                total += item.price * item.qty;
             });
-            baseMsg += `----------------------------------\n`;
-            baseMsg += `*TOTAL ESTIMADO: Bs. ${total.toFixed(2)}*\n\n`;
-            baseMsg += `_Por favor, confírmenme disponibilidad y cuentas de depósito._`;
-
-            window.open(`https://wa.me/59176887538?text=${encodeURIComponent(baseMsg)}`, '_blank');
+            msg += `\n*Total del Pedido:* Bs. ${total.toFixed(2)}`;
+            window.open(`https://wa.me/591XXXXXXXX?text=${encodeURIComponent(msg)}`, '_blank'); // Cambia XXXXXXXX por tu número
         }
 
-        // Inicialización de Grids de Inicio y Lo Nuevo
-        function initApp() {
-            const techGrid = document.getElementById('home-tech-grid');
-            const advGrid = document.getElementById('home-adventure-grid');
-            const newGrid = document.getElementById('new-products-grid');
-
-            if(techGrid) {
-                products.filter(p => p.section === 'tech').forEach(p => techGrid.innerHTML += generatePremiumCard(p));
-            }
-            if(advGrid) {
-                products.filter(p => p.section === 'adventure').forEach(p => advGrid.innerHTML += generatePremiumCard(p));
-            }
-            if(newGrid) {
-                // Renderizar los mismos productos en la sección "Lo Nuevo" simulando ingresos
-                products.forEach(p => newGrid.innerHTML += generatePremiumCard(p));
-            }
-
-            renderCatalog();
-            updateCartUI();
-        }
-
-        window.onload = initApp;
+        // Inicializar la aplicación al cargar
+        window.onload = initGrids;
     </script>
 </body>
 </html>
