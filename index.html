@@ -23,7 +23,7 @@
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; outline: none; -webkit-tap-highlight-color: transparent; }
-        body { font-family: 'Plus Jakarta Sans', sans-serif; color: var(--text-dark); background-color: #fff; padding-bottom: 60px; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; color: var(--text-dark); background-color: #fff; }
 
         /* NAVEGACIÓN GLOBAL */
         nav { 
@@ -41,54 +41,20 @@
         /* ICONO HAMBURGUESA PARA MÓVIL (Oculto en PC) */
         .hamburger-menu { display: none; font-size: 1.3rem; color: var(--blue-dark); cursor: pointer; }
 
-        /* Barra de navegación inferior fija */
-        .bottom-navigation {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 60px;
-            background-color: #ffffff;
-            border-top: 1px solid #e2e8f0;
-            display: grid;
-            grid-template-columns: repeat(4, 1fr); /* Divide el espacio exactamente en 4 partes iguales */
-            align-items: center;
-            justify-items: center;
-            z-index: 2000;
-            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+        /* BARRA INFERIOR MÓVIL (TAB BAR) */
+        .mobile-tab-bar {
+            position: fixed; bottom: 0; left: 0; right: 0; height: 65px;
+            background: #ffffff; border-top: 1px solid var(--border-color);
+            display: none; justify-content: space-around; align-items: center;
+            z-index: 1010; box-shadow: 0 -4px 12px rgba(0,0,0,0.05);
         }
-
-        /* Estilo individual para cada pestaña */
-        .nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-decoration: none;
-            color: #64748b; /* Gris corporativo elegante para estados inactivos */
-            width: 100%;
-            height: 100%;
-            gap: 4px;
-            cursor: pointer;
+        .tab-item {
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            color: var(--text-dim); text-decoration: none; font-size: 0.7rem; font-weight: 700;
+            text-transform: uppercase; cursor: pointer; width: 100%; height: 100%; gap: 4px;
         }
-
-        /* Íconos */
-        .nav-item i {
-            font-size: 18px;
-        }
-
-        /* Texto de los botones */
-        .nav-item span {
-            font-size: 9px; /* Ajustado para que "LO NUEVO" entre perfecto en pantallas chicas */
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        /* Estado Activo / Selección */
-        .nav-item.active {
-            color: #0f172a; /* El tono oscuro principal de tu marca */
-        }
+        .tab-item.active { color: var(--blue-dark); }
+        .tab-item i { font-size: 1.2rem; }
 
         /* MENÚ LATERAL DESPLEGABLE MÓVIL (DRAWER) */
         .mobile-drawer {
@@ -163,7 +129,7 @@
         .badge-promo { position: absolute; top: 12px; left: 12px; background: var(--promo); color: white; font-size: 0.6rem; font-weight: 700; padding: 4px 10px; border-radius: 4px; text-transform: uppercase; z-index: 10; }
         
         .premium-info { padding: 15px 5px; text-align: left; }
-        .premium-info h4 { font-size: 0.95rem; font-weight: 600; color: #1e293b; line-height: 1.4; margin-bottom: 8px; display: -webkit-box; -webkit-line-clamp: 2; line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; height: 40px; }
+        .premium-info h4 { font-size: 0.95rem; font-weight: 600; color: #1e293b; line-height: 1.4; margin-bottom: 8px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; height: 40px; }
         .premium-prices { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
         .p-current { font-size: 1.05rem; font-weight: 800; color: var(--blue-dark); }
         
@@ -255,6 +221,7 @@
             
             /* Activación de barras móviles */
             .hamburger-menu { display: block; }
+            .mobile-tab-bar { display: flex; }
         }
         @media (max-width: 480px) {
             .premium-grid, .catalog-products-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 10px !important; }
@@ -302,24 +269,22 @@
         </div>
     </nav>
 
-    <div class="bottom-navigation">
-        <div id="m-btn-home" class="nav-item active" onclick="navigateToMobile('home')">
+    <div class="mobile-tab-bar">
+        <div id="tab-home" class="tab-item active" onclick="navigateTo('home')">
             <i class="fas fa-home"></i>
-            <span>INICIO</span>
+            <span>Inicio</span>
         </div>
-        <div id="m-btn-catalog" class="nav-item" onclick="navigateToMobile('catalog')">
+        <div id="tab-new" class="tab-item" onclick="navigateTo('new')">
+            <i class="fas fa-bolt"></i>
+            <span>Lo Nuevo</span>
+        </div>
+        <div id="tab-catalog" class="tab-item" onclick="navigateTo('catalog')">
             <i class="fas fa-th-large"></i>
-            <span>TIENDA</span>
+            <span>Tienda</span>
         </div>
-        <div id="m-btn-new" class="nav-item" onclick="navigateToMobile('new')"> 
-            <i class="fas fa-star"></i>
-            <span>LO NUEVO</span>
-        </div>
-        <div id="m-btn-cart" class="nav-item" onclick="toggleCart(true)">
-            <div class="cart-icon-wrapper" style="font-size: 18px;">
-                <i class="fas fa-shopping-bag"></i>
-            </div>
-            <span>CARRO</span>
+        <div id="tab-cart" class="tab-item" onclick="toggleCart(true)">
+            <i class="fas fa-shopping-bag"></i>
+            <span>Carro</span>
         </div>
     </div>
 
@@ -502,7 +467,6 @@
         let currentCategory = 'all';
         let currentBrand = 'all';
 
-        // LÓGICA DE HISTORIAL PARA EL BOTÓN ATRÁS EN CELULARES
         window.addEventListener('popstate', function (event) {
             const drawer = document.getElementById('mobile-drawer');
             const cartMenu = document.getElementById('sidebar-cart');
@@ -514,32 +478,18 @@
             }
         });
 
-        // NUEVA FUNCIÓN EXCLUSIVA PARA LA NAVEGACIÓN INFERIOR MÓVIL
-        function navigateToMobile(viewId) {
-            // Desactiva todos los botones inferiores
-            document.querySelectorAll('.bottom-navigation .nav-item').forEach(btn => btn.classList.remove('active'));
-            
-            // Activa el botón actual
-            const activeBtn = document.getElementById(`m-btn-${viewId}`);
-            if(activeBtn) activeBtn.classList.add('active');
-            
-            // Llama a la navegación global estándar
-            navigateTo(viewId);
-        }
-
         function navigateTo(viewId) {
             document.querySelectorAll('.page-section').forEach(p => p.classList.remove('active'));
             document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+            document.querySelectorAll('.mobile-tab-bar .tab-item').forEach(t => t.classList.remove('active'));
             
-            // Sincroniza la barra inferior por si se navega desde PC
-            document.querySelectorAll('.bottom-navigation .nav-item').forEach(btn => btn.classList.remove('active'));
-            const activeBtn = document.getElementById(`m-btn-${viewId}`);
-            if(activeBtn) activeBtn.classList.add('active');
-
             document.getElementById(`view-${viewId}`).classList.add('active');
             
             const link = document.getElementById(`link-${viewId}`);
             if(link) link.classList.add('active');
+
+            const tab = document.getElementById(`tab-${viewId}`);
+            if(tab) tab.classList.add('active');
 
             window.scrollTo(0,0);
         }
@@ -573,12 +523,269 @@
             document.querySelectorAll('.drawer-menu li').forEach(li => li.classList.remove('active'));
             document.getElementById(`m-cat-${cat}`).classList.add('active');
             toggleDrawer(false);
-            navigateToMobile('catalog');
+            navigateTo('catalog');
         }
 
-        // Simulación básica de renderizado inicial (puedes completarlo con tu lógica de render actual)
-        document.getElementById('progText').innerText = 'Inventario Sincronizado';
-        document.getElementById('progFill').style.width = '100%';
+        function filterCategory(cat) {
+            currentCategory = cat;
+            renderCatalog();
+        }
+
+        function filterBrand(brand) {
+            currentBrand = currentBrand === brand ? 'all' : brand;
+            document.querySelectorAll('.brand-box').forEach(b => b.classList.remove('active'));
+            if(currentBrand !== 'all') {
+                document.getElementById(`brand-${brand}`).classList.add('active');
+            }
+            renderCatalog();
+        }
+
+        function renderCatalog() {
+            const container = document.getElementById('catalog-products-grid');
+            if(!container) return;
+            container.innerHTML = '';
+            
+            const filtered = products.filter(p => {
+                const matchCat = currentCategory === 'all' || p.category === currentCategory;
+                const matchBrand = currentBrand === 'all' || p.brand === currentBrand;
+                return matchCat && matchBrand;
+            });
+
+            filtered.forEach(p => {
+                container.innerHTML += generatePremiumCard(p, 'cat');
+            });
+        }
+
+        function generatePremiumCard(p, ctxUnique = '') {
+            const hasStock = p.stock > 0;
+            const stockClass = !hasStock ? 'stock-none' : (p.stock <= 5 ? 'stock-low' : 'stock-high');
+            const stockText = !hasStock ? 'AGOTADO' : (p.stock <= 5 ? `¡ÚLTIMAS ${p.stock}!` : `${p.stock} DISP.`);
+            const badgeClass = p.promo ? 'badge-promo' : 'card-badge';
+            
+            return `
+                <div class="premium-card" onclick="viewProductDetail(${p.id})">
+                    <div class="premium-img-box">
+                        <span class="sku-tag">${p.sku}</span>
+                        ${p.badge ? `<span class="${badgeClass}">${p.badge}</span>` : ''}
+                        <img src="${p.img}" alt="${p.name}">
+                    </div>
+                    <div class="premium-info">
+                        <span class="premium-brand-tag">${p.brand}</span>
+                        <h4>${p.name}</h4>
+                        <div class="premium-prices">
+                            <span class="p-current">Bs. ${p.price.toFixed(2)}</span>
+                        </div>
+                        <span class="stock-tag ${stockClass}">${stockText}</span>
+                    </div>
+                </div>
+            `;
+        }
+
+        function viewProductDetail(id) {
+            const p = products.find(prod => prod.id === id);
+            if(!p) return;
+
+            document.getElementById('det-img').src = p.img;
+            document.getElementById('det-crumbs').innerText = `Inicio / ${p.category}`;
+            document.getElementById('det-brand-badge').innerText = p.brand;
+            document.getElementById('det-name').innerText = p.name;
+            document.getElementById('det-desc-top').innerText = p.desc;
+
+            // Renderizar Lista de viñetas
+            const bulletContainer = document.getElementById('det-bullet-list');
+            bulletContainer.innerHTML = '';
+            p.bullets.forEach(b => {
+                bulletContainer.innerHTML += `<li>${b}</li>`;
+            });
+
+            // Renderizar Tabla Técnica
+            const tableContainer = document.getElementById('det-tech-table');
+            tableContainer.innerHTML = '';
+            for (const [key, value] of Object.entries(p.specs)) {
+                tableContainer.innerHTML += `
+                    <tr>
+                        <td class="label-td">${key}</td>
+                        <td class="value-td">${value}</td>
+                    </tr>
+                `;
+            }
+
+            // Selector de cantidad dinámico según Stock
+            const actionBox = document.getElementById('detail-action-box');
+            if(p.stock > 0) {
+                actionBox.innerHTML = `
+                    <div class="qty-box">
+                        <button class="qty-btn" onclick="alterDetailQty(-1)">-</button>
+                        <input type="number" class="qty-val" id="detail-qty-input" value="1" min="1" max="${p.stock}" readonly>
+                        <button class="qty-btn" onclick="alterDetailQty(1, ${p.stock})">+</button>
+                    </div>
+                    <button class="btn-add-blue" onclick="addProductFromDetail(${p.id})">Añadir a la lista</button>
+                `;
+            } else {
+                actionBox.innerHTML = `
+                    <button class="btn-add-blue btn-disabled" disabled>Producto Agotado</button>
+                `;
+            }
+
+            document.getElementById('det-wa-btn').onclick = function() {
+                const msg = encodeURIComponent(`Hola Creactivo, estoy interesado en el producto mayorista: ${p.name} (SKU: ${p.sku}). ¿Tienen disponibilidad?`);
+                window.open(`https://wa.me/59176887538?text=${msg}`, '_blank');
+            };
+
+            navigateTo('detail');
+        }
+
+        function alterDetailQty(amount, max) {
+            const input = document.getElementById('detail-qty-input');
+            let current = parseInt(input.value) + amount;
+            if(current < 1) current = 1;
+            if(max && current > max) current = max;
+            input.value = current;
+        }
+
+        function addProductFromDetail(id) {
+            const qty = parseInt(document.getElementById('detail-qty-input').value);
+            addToCart(id, qty);
+        }
+
+        function addToCart(id, qty = 1) {
+            const p = products.find(prod => prod.id === id);
+            const existing = cart.find(item => item.id === id);
+
+            if(existing) {
+                if(existing.qty + qty <= p.stock) {
+                    existing.qty += qty;
+                } else {
+                    existing.qty = p.stock;
+                    alert(`Disponibilidad máxima alcanzada (${p.stock} unidades).`);
+                }
+            } else {
+                cart.push({ id: p.id, qty: qty });
+            }
+            updateCartUI();
+        }
+
+        function alterCartItemQty(id, amount) {
+            const p = products.find(prod => prod.id === id);
+            const item = cart.find(i => i.id === id);
+            if(!item) return;
+
+            item.qty += amount;
+            if(item.qty <= 0) {
+                cart = cart.filter(i => i.id !== id);
+            } else if(item.qty > p.stock) {
+                item.qty = p.stock;
+                alert(`Stock máximo limitado a ${p.stock} unidades.`);
+            }
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            localStorage.setItem('creactivo_cart', JSON.stringify(cart));
+            
+            // Contador badge superior
+            const count = cart.reduce((acc, item) => acc + item.qty, 0);
+            document.getElementById('cart-count').innerText = count;
+
+            // Contenedor lateral
+            const container = document.getElementById('cart-items-container');
+            container.innerHTML = '';
+            
+            let total = 0;
+
+            cart.forEach(item => {
+                const p = products.find(prod => prod.id === item.id);
+                total += p.price * item.qty;
+
+                container.innerHTML += `
+                    <div class="cart-item">
+                        <img src="${p.img}" alt="${p.name}">
+                        <div style="flex:1;">
+                            <h5 style="font-size:0.8rem; font-weight:700; line-height:1.2; max-width:180px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${p.name}</h5>
+                            <span style="font-size:0.75rem; font-weight:800; color:var(--accent-premium); display:block; margin-top:2px;">Bs. ${(p.price * item.qty).toFixed(2)}</span>
+                            <div style="display:flex; align-items:center; background:#fff; border:1px solid #cbd5e1; border-radius:4px; width:fit-content; margin-top:6px; overflow:hidden;">
+                                <button style="border:none; background:none; padding:4px 10px; font-weight:800; cursor:pointer;" onclick="alterCartItemQty(${p.id}, -1)">-</button>
+                                <span style="font-size:0.75rem; font-weight:800; width:25px; text-align:center;">${item.qty}</span>
+                                <button style="border:none; background:none; padding:4px 10px; font-weight:800; cursor:pointer;" onclick="alterCartItemQty(${p.id}, 1)">+</button>
+                            </div>
+                        </div>
+                        <i class="fas fa-trash-alt" style="color:#ef4444; cursor:pointer; font-size:0.9rem; padding:10px;" onclick="alterCartItemQty(${item.id}, -${item.qty})"></i>
+                    </div>
+                `;
+            });
+
+            document.getElementById('totalLabel').innerText = `Bs. ${total.toFixed(2)}`;
+
+            // Barra de progreso de envío
+            const target = 2000;
+            const progressFill = document.getElementById('progFill');
+            const progressText = document.getElementById('progText');
+            
+            const pct = Math.min((total / target) * 100, 100);
+            if(progressFill) progressFill.style.width = `${pct}%`;
+            
+            if(progressText) {
+                if(total === 0) {
+                    progressText.innerText = 'Tu carrito está vacío';
+                } else if(total < target) {
+                    progressText.innerText = `Faltan Bs. ${(target - total).toFixed(2)} para envío gratis a todo el país`;
+                } else {
+                    progressText.innerText = '¡Felicidades! Tienes Envío Gratis Garantizado';
+                }
+            }
+        }
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+
+            document.getElementById(`btn-${tabId}`).classList.add('active');
+            document.getElementById(tabId).classList.add('active');
+        }
+
+        function sendWhatsAppOrder() {
+            if(cart.length === 0) {
+                alert('El carro está totalmente vacío.');
+                return;
+            }
+            let baseMsg = `*NUEVA SOLICITUD DE PEDIDO - CREACTIVO*\n\n`;
+            let total = 0;
+            cart.forEach((item, idx) => {
+                const p = products.find(prod => prod.id === item.id);
+                baseMsg += `*${idx + 1}.* ${p.name}\n`;
+                baseMsg += `   SKU: _${p.sku}_ | Cantidad: *${item.qty}*\n`;
+                baseMsg += `   Subtotal: Bs. ${(p.price * item.qty).toFixed(2)}\n\n`;
+                total += p.price * item.qty;
+            });
+            baseMsg += `----------------------------------\n`;
+            baseMsg += `*TOTAL ESTIMADO: Bs. ${total.toFixed(2)}*\n\n`;
+            baseMsg += `_Por favor, confírmenme disponibilidad y cuentas de depósito._`;
+
+            window.open(`https://wa.me/59176887538?text=${encodeURIComponent(baseMsg)}`, '_blank');
+        }
+
+        // Inicialización de Grids de Inicio y Lo Nuevo
+        function initApp() {
+            const techGrid = document.getElementById('home-tech-grid');
+            const advGrid = document.getElementById('home-adventure-grid');
+            const newGrid = document.getElementById('new-products-grid');
+
+            if(techGrid) {
+                products.filter(p => p.section === 'tech').forEach(p => techGrid.innerHTML += generatePremiumCard(p));
+            }
+            if(advGrid) {
+                products.filter(p => p.section === 'adventure').forEach(p => advGrid.innerHTML += generatePremiumCard(p));
+            }
+            if(newGrid) {
+                // Renderizar los mismos productos en la sección "Lo Nuevo" simulando ingresos
+                products.forEach(p => newGrid.innerHTML += generatePremiumCard(p));
+            }
+
+            renderCatalog();
+            updateCartUI();
+        }
+
+        window.onload = initApp;
     </script>
 </body>
 </html>
