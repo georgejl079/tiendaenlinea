@@ -41,20 +41,53 @@
         /* ICONO HAMBURGUESA PARA MÓVIL (Oculto en PC) */
         .hamburger-menu { display: none; font-size: 1.3rem; color: var(--blue-dark); cursor: pointer; }
 
-        /* BARRA INFERIOR MÓVIL (TAB BAR) */
-        .mobile-tab-bar {
-            position: fixed; bottom: 0; left: 0; right: 0; height: 65px;
-            background: #ffffff; border-top: 1px solid var(--border-color);
-            display: none; justify-content: space-around; align-items: center;
-            z-index: 1010; box-shadow: 0 -4px 12px rgba(0,0,0,0.05);
-        }
-        .tab-item {
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            color: var(--text-dim); text-decoration: none; font-size: 0.7rem; font-weight: 700;
-            text-transform: uppercase; cursor: pointer; width: 100%; h-full; gap: 4px;
-        }
-        .tab-item.active { color: var(--blue-dark); }
-        .tab-item i { font-size: 1.2rem; }
+        /* Barra de navegación inferior fija */
+.bottom-navigation {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 60px;
+    background-color: #ffffff;
+    border-top: 1px solid #e2e8f0;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* Divide el espacio exactamente en 4 partes iguales */
+    align-items: center;
+    justify-items: center;
+    z-index: 1000;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+}
+
+/* Estilo individual para cada pestaña */
+.nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    color: #64748b; /* Gris corporativo elegante para estados inactivos */
+    width: 100%;
+    height: 100%;
+    gap: 4px;
+}
+
+/* Íconos */
+.nav-item i {
+    font-size: 18px;
+}
+
+/* Texto de los botones */
+.nav-item span {
+    font-size: 9px; /* Ajustado para que "LO NUEVO" entre perfecto en pantallas chicas */
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Estado Activo / Selección */
+.nav-item.active {
+    color: #0f172a; /* El tono oscuro principal de tu marca */
+}
 
         /* MENÚ LATERAL DESPLEGABLE MÓVIL (DRAWER) */
         .mobile-drawer {
@@ -269,20 +302,25 @@
         </div>
     </nav>
 
-    <div class="mobile-tab-bar">
-        <div id="tab-home" class="tab-item active" onclick="navigateTo('home')">
-            <i class="fas fa-home"></i>
-            <span>Inicio</span>
-        </div>
-        <div id="tab-catalog" class="tab-item" onclick="navigateTo('catalog')">
-            <i class="fas fa-th-large"></i>
-            <span>Tienda</span>
-        </div>
-        <div id="tab-cart" class="tab-item" onclick="toggleCart(true)">
-            <i class="fas fa-shopping-bag"></i>
-            <span>Carro</span>
-        </div>
-    </div>
+  <div class="bottom-navigation">
+  <a href="#inicio" class="nav-item">
+    <i class="fas fa-home"></i>
+    <span>INICIO</span>
+  </a>
+  <a href="#tienda" class="nav-item">
+    <i class="fas fa-th-large"></i>
+    <span>TIENDA</span>
+  </a>
+  <a href="#lo-nuevo" class="nav-item active"> <i class="fas fa-star"></i>
+    <span>LO NUEVO</span>
+  </a>
+  <a href="#carro" class="nav-item">
+    <div class="cart-icon-wrapper">
+      <i class="fas fa-shopping-bag"></i>
+      </div>
+    <span>CARRO</span>
+  </a>
+</div>
 
     <div id="view-home" class="page-section active">
         <header class="hero">
