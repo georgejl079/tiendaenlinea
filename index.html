@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Creactivo | Urban & Tech Packs</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --blue-corp: #1e293b; 
+            --blue-dark: #0f172a;
+            --accent-premium: #b45309; /* Tono marrón/cuero sofisticado */
+            --green-wa: #25D366;
+            --text-dark: #1e293b;
+            --text-dim: #64748b;
+            --border-color: #e2e8f0;
+            --bg-light: #f8fafc;
+            --promo: #f43f5e;
+            --success: #10b981;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; outline: none; -webkit-tap-highlight-color: transparent; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; color: var(--text-dark); background-color: #fff; }
+
+        /* NAVEGACIÓN GLOBAL */
+        nav { 
+            padding: 18px 5%; display: flex; justify-content: space-between; align-items: center; 
+            position: sticky; top: 0; background: #fff; z-index: 1000; border-bottom: 1px solid var(--border-color);
+        }
+        .logo { font-size: 1.2rem; font-weight: 800; color: var(--blue-dark); cursor: pointer; letter-spacing: 1px; text-transform: uppercase; }
+        .nav-links { display: flex; gap: 25px; list-style: none; }
+        .nav-links a { text-decoration: none; color: var(--text-dark); font-weight: 600; font-size: 0.85rem; text-transform: uppercase; cursor: pointer; padding-bottom: 5px; letter-spacing: 0.5px; }
+        .nav-links a.active { color: var(--blue-dark); border-bottom: 2px solid var(--blue-dark); }
+        
+        .cart-icon-wrapper { position: relative; cursor: pointer; font-size: 1.2rem; color: var(--blue-dark); }
+        .badge { position: absolute; top: -7px; right: -10px; background: var(--blue-dark); color: white; font-size: 0.65rem; padding: 2px 6px; border-radius: 50%; font-weight: 700; }
+
+        /* CONTROL MULTIPÁGINA */
+        .page-section { display: none; }
+        .page-section.active { display: block; }
+
+        /* BANNERS PRINCIPALES */
+        .hero { 
+            height: 30vh; 
+            background: linear-gradient(rgba(15, 23, 42, 0.4), rgba(15, 23, 42, 0.85)), 
+                        url('https://images.unsplash.com/photo-1544816155-12df9643f363?q=80&w=1200') center/cover;
+            display: flex; align-items: center; justify-content: center; color: white; text-align: center; padding: 20px;
+        }
+        .hero h1 { font-size: 2rem; font-weight: 800; letter-spacing: -0.5px; }
+        .hero p { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 2px; margin-top: 8px; color: #cbd5e1; font-weight: 600; }
+
+        .hero-new {
+            background: linear-gradient(rgba(180, 83, 9, 0.3), rgba(15, 23, 42, 0.9)), 
+                        url('https://images.unsplash.com/photo-1553062407-98eeb64c6a62?q=80&w=1200') center/cover;
+        }
+
+        /* SISTEMA DE PROGRESO DE ENVÍO */
+        .shipping-progress { padding: 15px 5%; background: #fff; border-bottom: 1px solid var(--border-color); }
+        .progress-bar-bg { width: 100%; height: 8px; background: var(--border-color); border-radius: 10px; margin-top: 8px; overflow: hidden; }
+        .progress-bar-fill { height: 100%; background: linear-gradient(90deg, var(--accent-premium), var(--success)); width: 0%; transition: width 0.4s ease; }
+
+        /* ESTRUCTURA DE TÍTULOS */
+        .section-container { padding: 40px 5% 10px; }
+        .section-tag { font-size: 0.65rem; letter-spacing: 2px; color: var(--text-dim); text-transform: uppercase; font-weight: 700; margin-bottom: 4px; display: block; }
+        .section-title { font-size: 1.5rem; font-weight: 800; color: #0f172a; border-left: 4px solid var(--accent-premium); padding-left: 12px; line-height: 1.2; }
+
+        /* GRIDS PREMIUM */
+        .premium-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 25px; padding: 15px 5% 40px; }
+        .premium-card { background: #fff; border-radius: 12px; overflow: hidden; display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s, box-shadow 0.2s; border: 1px solid transparent; cursor: pointer; position: relative; }
+        .premium-card:hover { transform: translateY(-4px); box-shadow: 0 12px 20px rgba(0,0,0,0.06); }
+        .premium-img-box { aspect-ratio: 1/1; background: var(--bg-light); display: flex; align-items: center; justify-content: center; padding: 25px; position: relative; border-radius: 12px; }
+        .premium-img-box img { max-width: 100%; max-height: 100%; object-fit: contain; }
+        
+        /* ETIQUETAS SKU Y BADGES */
+        .sku-tag { position: absolute; top: 12px; right: 12px; background: rgba(15, 23, 42, 0.75); color: white; padding: 3px 8px; border-radius: 4px; font-size: 0.6rem; font-weight: 700; z-index: 10; letter-spacing: 0.5px; }
+        .card-badge { position: absolute; top: 12px; left: 12px; background: var(--accent-premium); color: white; font-size: 0.6rem; font-weight: 700; padding: 4px 10px; border-radius: 4px; text-transform: uppercase; z-index: 10; }
+        .badge-promo { position: absolute; top: 12px; left: 12px; background: var(--promo); color: white; font-size: 0.6rem; font-weight: 700; padding: 4px 10px; border-radius: 4px; text-transform: uppercase; z-index: 10; }
+        
+        .premium-info { padding: 15px 5px; text-align: left; }
+        .premium-info h4 { font-size: 0.95rem; font-weight: 600; color: #1e293b; line-height: 1.4; margin-bottom: 8px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; height: 40px; }
+        .premium-prices { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+        .p-current { font-size: 1.05rem; font-weight: 800; color: var(--blue-dark); }
+        
+        /* ENTORNO STOCK */
+        .stock-tag { font-size: 0.6rem; font-weight: 800; padding: 3px 8px; border-radius: 4px; display: inline-block; text-transform: uppercase; }
+        .stock-high { background: #dcfce7; color: #166534; }
+        .stock-low { background: #fee2e2; color: #991b1b; }
+        .stock-none { background: #f1f5f9; color: #475569; }
+
+        /* SELECTORES DE CANTIDAD */
+        .qty-box { display: flex; align-items: center; background: var(--bg-light); border-radius: 6px; border: 1px solid var(--border-color); margin-bottom: 10px; overflow: hidden; }
+        .qty-btn { flex: 1; padding: 10px; border: none; background: transparent; cursor: pointer; font-weight: 800; color: var(--blue-dark); }
+        .qty-btn:hover { background: #e2e8f0; }
+        .qty-val { width: 45px; text-align: center; border: none; background: transparent; font-weight: 800; outline: none; color: var(--blue-dark); }
+        
+        .premium-brand-tag { font-size: 0.65rem; font-weight: 700; color: var(--text-dim); text-transform: uppercase; margin-top: 4px; display: block; }
+        .btn-add-blue { background-color: var(--blue-corp); color: white; width: 100%; padding: 12px; border: none; font-weight: 700; font-size: 0.8rem; text-transform: uppercase; cursor: pointer; border-radius: 4px; margin-top: 10px; transition: background 0.2s; }
+        .btn-add-blue:hover { background-color: var(--blue-dark); }
+        .btn-disabled { background: #cbd5e1 !important; cursor: not-allowed !important; color: #64748b !important; }
+
+        /* CATÁLOGO DOS COLUMNAS */
+        .catalog-container { display: flex; padding: 30px 5%; gap: 30px; }
+        .sidebar-left { width: 25%; flex-shrink: 0; border-right: 1px solid var(--border-color); padding-right: 20px; }
+        .widget-title { font-size: 0.9rem; font-weight: 800; text-transform: uppercase; margin-bottom: 12px; color: #000; margin-top: 25px; }
+        .widget-title:first-child { margin-top: 0; }
+        .cat-list { list-style: none; }
+        .cat-list li { padding: 10px 0; border-bottom: 1px solid #f1f5f9; font-size: 0.85rem; cursor: pointer; display: flex; justify-content: space-between; align-items: center; color: #4a5568; }
+        .cat-list li:hover, .cat-list li.active { color: var(--blue-dark); font-weight: 700; }
+        .brand-logos { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 12px; }
+        .brand-box { border: 1px solid var(--border-color); padding: 8px; text-align: center; border-radius: 4px; font-weight: 800; font-size: 0.75rem; color: #718096; cursor: pointer; }
+        .brand-box.active { border-color: var(--blue-dark); color: var(--blue-dark); background: #f8fafc; }
+        .catalog-right { width: 75%; }
+        .catalog-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid var(--border-color); }
+        .catalog-products-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px; }
+
+        /* DETALLE DE PRODUCTO */
+        #view-detail.active { display: block; }
+        .product-detail-view { display: flex; padding: 40px 5%; gap: 50px; align-items: flex-start; }
+        .detail-left { width: 45%; text-align: center; border: 1px solid var(--border-color); border-radius: 12px; padding: 30px; display: flex; align-items: center; justify-content: center; background: #fff; position: relative; }
+        .detail-left img { max-width: 100%; max-height: 400px; object-fit: contain; }
+        
+        .detail-right { width: 55%; }
+        .brand-inline-box { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .brand-badge-tech { font-size: 0.75rem; font-weight: 800; text-transform: uppercase; color: var(--blue-dark); background: #f1f5f9; padding: 4px 12px; border-radius: 4px; border: 1px solid #cbd5e1; }
+        
+        .detail-title { font-size: 1.8rem; font-weight: 800; color: #0f172a; margin-bottom: 15px; line-height: 1.3; }
+        .detail-desc-short { font-size: 0.95rem; color: #4b5563; line-height: 1.6; margin-bottom: 25px; }
+        
+        .actions-block { display: flex; flex-direction: column; gap: 12px; margin-bottom: 35px; }
+        .btn-pdf { background: #0f172a; color: white; padding: 14px 24px; border: none; border-radius: 6px; font-weight: 700; display: inline-flex; align-items: center; gap: 10px; cursor: pointer; font-size: 0.85rem; width: fit-content; text-transform: uppercase; letter-spacing: 0.5px; }
+        .btn-wa-consult { background: var(--green-wa); color: white; padding: 14px 28px; border: none; border-radius: 50px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 12px; cursor: pointer; width: fit-content; font-size: 1rem; box-shadow: 0 4px 12px rgba(37, 211, 102, 0.25); }
+
+        /* TABS */
+        .tabs-wrapper { margin-top: 40px; border-top: 1px solid var(--border-color); }
+        .tabs-header { display: flex; gap: 30px; border-bottom: 1px solid var(--border-color); }
+        .tab-btn { background: none; border: none; padding: 15px 0; font-size: 0.9rem; font-weight: 700; text-transform: uppercase; color: var(--text-dim); cursor: pointer; position: relative; }
+        .tab-btn.active { color: var(--blue-dark); }
+        .tab-btn.active::after { content: ''; position: absolute; bottom: -1px; left: 0; width: 100%; height: 3px; background: var(--blue-dark); }
+        
+        .tab-content { padding: 25px 0; display: none; }
+        .tab-content.active { display: block; }
+        .tab-content ul { padding-left: 20px; color: #475569; font-size: 0.9rem; line-height: 1.7; }
+        .tab-content ul li { margin-bottom: 8px; }
+        
+        .tech-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.9rem; }
+        .tech-table tr { border-bottom: 1px solid #f1f5f9; }
+        .tech-table tr:nth-child(even) { background: #f8fafc; }
+        .tech-table td { padding: 12px 15px; }
+        .tech-table td.label-td { font-weight: 700; color: #334155; width: 35%; }
+        .tech-table td.value-td { color: #64748b; }
+
+        /* CARRITO / BOLSA LATERAL */
+        .sidebar-cart { position: fixed; top: 0; right: -100%; width: 100%; max-width: 380px; height: 100vh; background: white; z-index: 2000; transition: 0.3s; padding: 25px; display: flex; flex-direction: column; box-shadow: -5px 0 15px rgba(0,0,0,0.05); border-left: 1px solid var(--border-color); }
+        .sidebar-cart.active { right: 0; }
+        .cart-item { display: flex; gap: 12px; margin-bottom: 12px; padding: 12px; background: var(--bg-light); border-radius: 8px; align-items: center; border: 1px solid var(--border-color); }
+        .cart-item img { width: 45px; height: 45px; object-fit: contain; }
+
+        /* RESPONSIVO */
+        @media (max-width: 1024px) {
+            .premium-grid { grid-template-columns: repeat(3, 1fr); }
+            .sidebar-left { display: none; }
+            .catalog-right { width: 100%; }
+            .catalog-products-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 768px) {
+            .premium-grid, .catalog-products-grid { grid-template-columns: repeat(2, 1fr); gap: 15px; padding: 15px 3% 30px; }
+            .product-detail-view { flex-direction: column; gap: 30px; }
+            .detail-left, .detail-right { width: 100%; }
+        }
+        @media (max-width: 480px) {
+            .premium-grid, .catalog-products-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 10px !important; }
+            .premium-info h4 { font-size: 0.8rem; height: 35px; }
+            .p-current { font-size: 0.9rem; }
+            .qty-btn { padding: 6px; }
+            .btn-add-blue { padding: 10px 5px; font-size: 0.75rem; }
+            .nav-links { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo" onclick="navigateTo('home')">CREACTIVO</div>
+        <ul class="nav-links">
+            <li><a id="link-home" class="active" onclick="navigateTo('home')">Inicio</a></li>
+            <li><a id="link-new" onclick="navigateTo('new')">Lo Nuevo</a></li>
+            <li><a id="link-catalog" onclick="navigateTo('catalog')">Productos</a></li>
+        </ul>
+        <div class="cart-icon-wrapper" onclick="toggleCart(true)">
+            <i class="fas fa-shopping-bag"></i>
+            <span class="badge" id="cart-count">0</span>
+        </div>
+    </nav>
+
+    <div id="view-home" class="page-section active">
+        <header class="hero">
+            <div>
+                <h1>Equipamiento Tecnológico y Urbano Premium</h1>
+                <p>Importación Directa para Profesionales y Viajeros</p>
+            </div>
+        </header>
+
+        <div class="shipping-progress">
+            <div style="display:flex; justify-content:space-between; font-size:0.75rem; font-weight:800;">
+                <span id="progText">Cargando inventario...</span>
+                <span style="color:var(--blue-dark);">Meta: Bs. 2000</span>
+            </div>
+            <div class="progress-bar-bg"><div class="progress-bar-fill" id="progFill"></div></div>
+        </div>
+
+        <div class="section-container">
+            <span class="section-tag">01 / Colección Tecnológica</span>
+            <h2 class="section-title">Mochilas Urbanas & Tech</h2>
+        </div>
+        <section class="premium-grid" id="home-tech-grid"></section>
+
+        <div class="section-container">
+            <span class="section-tag">02 / Equipaje de Alto Rendimiento</span>
+            <h2 class="section-title">Maletas & Aventura</h2>
+        </div>
+        <section class="premium-grid" id="home-adventure-grid"></section>
+    </div>
+
+    <div id="view-new" class="page-section">
+        <header class="hero hero-new">
+            <div>
+                <h1>Novedades y Tendencias Exclusivas</h1>
+                <p>Últimos ingresos y Lanzamientos de Temporada</p>
+            </div>
+        </header>
+        
+        <div class="section-container">
+            <span class="section-tag">Recién Llegados / Stock Limitado</span>
+            <h2 class="section-title">Últimas Incorporaciones</h2>
+        </div>
+        <section class="premium-grid" id="new-products-grid"></section>
+    </div>
+
+    <div id="view-catalog" class="page-section">
+        <div class="catalog-container">
+            <aside class="sidebar-left">
+                <h3 class="widget-title">Categorías</h3>
+                <ul class="cat-list">
+                    <li class="active" id="cat-all" onclick="filterCategory('all')">Ver Todo</li>
+                    <li id="cat-Urbana" onclick="filterCategory('Urbana')">Mochilas Urbanas</li>
+                    <li id="cat-Viaje" onclick="filterCategory('Viaje')">Equipaje de Viaje</li>
+                </ul>
+                <h3 class="widget-title">Marcas</h3>
+                <div class="brand-logos">
+                    <div class="brand-box" id="brand-Vinta" onclick="filterBrand('Vinta')">Vinta</div>
+                    <div class="brand-box" id="brand-Nordic" onclick="filterBrand('Nordic')">Nordic</div>
+                    <div class="brand-box" id="brand-Bange" onclick="filterBrand('Bange')">Bange</div>
+                </div>
+            </aside>
+            <main class="catalog-right">
+                <div class="catalog-header">
+                    <div style="font-size: 0.85rem; color: var(--text-dim);">Inicio / Catálogo General</div>
+                </div>
+                <div class="catalog-products-grid" id="catalog-products-grid"></div>
+            </main>
+        </div>
+    </div>
+
+    <div id="view-detail" class="page-section">
+        <div class="product-detail-view">
+            <div class="detail-left" id="detail-img-container">
+                <img id="det-img" src="">
+            </div>
+            
+            <div class="detail-right">
+                <div class="brand-inline-box">
+                    <div style="font-size:0.8rem; color:gray;" id="det-crumbs"></div>
+                    <span class="brand-badge-tech" id="det-brand-badge"></span>
+                </div>
+                
+                <h1 class="detail-title" id="det-name"></h1>
+                <p class="detail-desc-short" id="det-desc-top"></p>
+
+                <div id="detail-action-box" style="margin-bottom:25px; max-width:320px;"></div>
+
+                <div class="actions-block">
+                    <button class="btn-pdf" onclick="alert('Abriendo dimensiones reales de empaque...')">
+                        <i class="fas fa-file-pdf"></i> VER CAPACIDAD EN LITROS
+                    </button>
+
+                    <button class="btn-wa-consult" id="det-wa-btn">
+                        <i class="fab fa-whatsapp" style="font-size: 1.4rem;"></i>
+                        <div style="text-align:left;">
+                            <span style="font-size:0.65rem; display:block; font-weight:400; opacity:0.95;">Consultar Stock Mayorista</span>
+                            <span>Consultar Disponibilidad</span>
+                        </div>
+                    </button>
+                </div>
+
+                <div class="tabs-wrapper">
+                    <div class="tabs-header">
+                        <button class="tab-btn active" id="btn-tab-desc" onclick="switchTab('tab-desc')">Descripción</button>
+                        <button class="tab-btn" id="btn-tab-specs" onclick="switchTab('tab-specs')">Especificaciones Técnicas</button>
+                    </div>
+                    
+                    <div id="tab-desc" class="tab-content active">
+                        <ul id="det-bullet-list"></ul>
+                    </div>
+                    
+                    <div id="tab-specs" class="tab-content">
+                        <table class="tech-table" id="det-tech-table"></table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="sidebar-cart" id="sidebar-cart">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+            <h3 style="font-weight: 800;">Lista de Pedido</h3>
+            <i class="fas fa-times" onclick="toggleCart(false)" style="cursor:pointer;"></i>
+        </div>
+        <div id="cart-items-container" style="flex:1; overflow-y:auto;"></div>
+        <div style="padding:15px 0; border-top:1px solid var(--border-color)">
+            <div style="display:flex; justify-content:space-between; margin-bottom:15px; font-size:1.3rem; font-weight:800; color:var(--blue-dark);">
+                <span>Total:</span>
+                <span id="totalLabel">Bs. 0.00</span>
+            </div>
+            <button class="btn-add-blue" style="background:var(--green-wa); padding:14px; font-size:0.9rem; margin-top:0;" onclick="sendWhatsAppOrder()">
+                <i class="fab fa-whatsapp"></i> ENVIAR SOLICITUD POR WHATSAPP
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const products = [
+            { 
+                id: 1, section: 'tech', brand: 'Bange', category: 'Urbana', sku: 'BG-7215', stock: 12, wholesale: 260.00, promo: false,
+                name: 'CyberPack Pro Antirrobo Smart USB', price: 295.00, badge: 'Top Ventas', 
+                desc: 'Mochila ergonómica de seguridad ejecutiva con revestimiento impermeable y compartimento blindado independiente.', 
+                bullets: [
+                    'Seguridad Inteligente: Cremalleras ocultas en el espaldar para evitar robos accidentales.',
+                    'Puerto Integrado: Conector exterior USB para enlazar cómodamente baterías portátiles.',
+                    'Estructura Oxford: Tela de alta densidad 100% resistente a cortes y rasgaduras.'
+                ],
+                specs: { 'Capacidad': '25 Litros', 'Compartimento Laptop': 'Hasta 16 pulgadas', 'Material Exterior': 'Poliéster Oxford 600D', 'Dimensiones': '45 x 30 x 15 cm' },
+                img: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?q=80&w=600' 
+            },
+            { 
+                id: 2, section: 'tech', brand: 'Vinta', category: 'Urbana', sku: 'VT-9902', stock: 4, wholesale: 305.00, promo: true,
+                name: 'Minimalist Leather RollTop Premium', price: 340.00, badge: 'Oferta', 
+                desc: 'Diseño elegante y enrollable con finas terminaciones en cuero vegano y herrajes metálicos mate.', 
+                bullets: [
+                    'Volumen Expandible: Cierre RollTop superior que adapta la capacidad según la necesidad.',
+                    'Acceso Lateral Directo: Permite extraer la laptop de forma rápida sin abrir la mochila.',
+                    'Estética Corporativa: Ideal tanto para reuniones ejecutivas como para traslados diarios.'
+                ],
+                specs: { 'Capacidad': '20 a 30 Litros', 'Material': 'Cuero vegano texturizado', 'Repelencia al agua': 'Certificación IPX4', 'Peso vacío': '0.9 kg' },
+                img: 'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?q=80&w=600' 
+            },
+            { 
+                id: 3, section: 'adventure', brand: 'Nordic', category: 'Viaje', sku: 'ND-4480', stock: 5, wholesale: 420.00, promo: false,
+                name: 'Maleta Rígida Adventure Pro Expandible', price: 480.00, badge: 'Nuevo', 
+                desc: 'Maleta de alta gama estructural con ruedas multidireccionales silenciosas de giro completo.', 
+                bullets: [
+                    'Movilidad Fluida: Cuenta con 4 ruedas dobles con rodamientos reforzados de 360 grados.',
+                    'Cerradura TSA: Sistema de seguridad numérica homologada para aeropuertos.',
+                    'Organización Interna: Compartimentos divisorios de malla con cintas elásticas de sujeción.'
+                ],
+                specs: { 'Tamaño': '24 Pulgadas (Mediana)', 'Carcasa Exterior': 'Policarbonato ABS de alto impacto', 'Peso Neto': '3.2 kg', 'Tipo de Cierre': 'Cremallera reforzada anti-explosión' },
+                img: 'https://images.unsplash.com/photo-1565026057447-bc90a3dceb87?q=80&w=600' 
+            }
+        ];
+
+        // SISTEMA DE PERSISTENCIA: Cargar datos guardados previamente
+        let cart = JSON.parse(localStorage.getItem('creactivo_cart')) || [];
+        let currentCategory = 'all';
+        let currentBrand = 'all';
+
+        function navigateTo(viewId) {
+            document.querySelectorAll('.page-section').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+            
+            document.getElementById(`view-${viewId}`).classList.add('active');
+            const link = document.getElementById(`link-${viewId}`);
+            if(link) link.classList.add('active');
+            window.scrollTo(0,0);
+        }
+
+        function generatePremiumCard(p, ctxUnique = '') {
+            const hasStock = p.stock > 0;
+            const stockClass = !hasStock ? 'stock-none' : (p.stock <= 5 ? 'stock-low' : 'stock-high');
+            const stockText = !hasStock ? 'AGOTADO' : (p.stock <= 5 ? `¡ÚLTIMAS ${p.stock}!` : `${p.stock} DISP.`);
+            const badgeClass = p.promo ? 'badge-promo' : 'card-badge';
+            const uniqueId = `${ctxUnique}-${p.id}`;
+
+            return `
+                <div class="premium-card" onclick="openDetails(${p.id})" style="${!hasStock ? 'opacity: 0.7;' : ''}">
+                    <span class="sku-tag">${p.sku}</span>
+                    <div class="premium-img-box">
+                        <span class="${badgeClass}">${p.badge}</span>
+                        <img src="${p.img}" alt="${p.name}">
+                    </div>
+                    <div class="premium-info">
+                        <h4>${p.name}</h4>
+                        <div class="premium-prices">
+                            <span class="p-current">Bs. ${p.price.toFixed(2)}</span>
+                            <span class="stock-tag ${stockClass}">${stockText}</span>
+                        </div>
+                        <div class="qty-box" onclick="event.stopPropagation();">
+                            <button class="qty-btn" onclick="stepQty('${uniqueId}', -1)" ${!hasStock?'disabled':''}>-</button>
+                            <input type="number" id="qty-grid-${uniqueId}" value="${hasStock?1:0}" class="qty-val" readonly>
+                            <button class="qty-btn" onclick="stepQty('${uniqueId}', 1)" ${!hasStock?'disabled':''}>+</button>
+                        </div>
+                        <span class="premium-brand-tag">${p.brand} • ${p.category}</span>
+                        <button class="btn-add-blue ${!hasStock?'btn-disabled':''}" 
+                                onclick="event.stopPropagation(); addToCart(${p.id}, document.getElementById('qty-grid-${uniqueId}').value)"
+                                ${!hasStock?'disabled':''}>
+                            ${hasStock ? 'AÑADIR AL CARRITO' : 'SIN STOCK'}
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function initGrids() {
+            document.getElementById('home-tech-grid').innerHTML = products.filter(p => p.section === 'tech').map(p => generatePremiumCard(p, 'home-tech')).join('');
+            document.getElementById('home-adventure-grid').innerHTML = products.filter(p => p.section === 'adventure').map(p => generatePremiumCard(p, 'home-adv')).join('');
+            
+            // Renderizado automático de la sección "Lo Nuevo" (Filtrando tags "Nuevo" u ofertas activas)
+            document.getElementById('new-products-grid').innerHTML = products.filter(p => p.badge === 'Nuevo' || p.promo === true).map(p => generatePremiumCard(p, 'new')).join('');
+            
+            renderCatalogGrid();
+            updateUI();
+        }
+
+        function renderCatalogGrid() {
+            const filtered = products.filter(p => {
+                return (currentCategory === 'all' || p.category === currentCategory) && 
+                       (currentBrand === 'all' || p.brand === currentBrand);
+            });
+            document.getElementById('catalog-products-grid').innerHTML = filtered.map(p => generatePremiumCard(p, 'catalog')).join('');
+        }
+
+        function filterCategory(cat) {
+            currentCategory = cat; 
+            currentBrand = 'all';
+            document.querySelectorAll('.cat-list li').forEach(li => li.classList.remove('active'));
+            document.querySelectorAll('.brand-box').forEach(b => b.classList.remove('active'));
+            document.getElementById(`cat-${cat}`).classList.add('active');
+            renderCatalogGrid();
+        }
+
+        function filterBrand(brand) {
+            currentBrand = brand; 
+            currentCategory = 'all';
+            document.querySelectorAll('.cat-list li').forEach(li => li.classList.remove('active'));
+            document.querySelectorAll('.brand-box').forEach(b => b.classList.remove('active'));
+            document.getElementById(`cat-all`).classList.add('active');
+            document.getElementById(`brand-${brand}`).classList.add('active');
+            renderCatalogGrid();
+        }
+
+        function openDetails(id) {
+            const p = products.find(prod => prod.id === id);
+            if (!p) return;
+            
+            const hasStock = p.stock > 0;
+            const stockClass = !hasStock ? 'stock-none' : (p.stock <= 5 ? 'stock-low' : 'stock-high');
+            const stockText = !hasStock ? 'AGOTADO' : (p.stock <= 5 ? `¡ÚLTIMAS ${p.stock}!` : `${p.stock} UNIDADES`);
+
+            const imgContainer = document.getElementById('detail-img-container');
+            imgContainer.innerHTML = `<span class="sku-tag">${p.sku}</span><img id="det-img" src="${p.img}">`;
+
+            document.getElementById('det-crumbs').innerText = `Inicio / ${p.brand.toUpperCase()} / ${p.category.toUpperCase()}`;
+            document.getElementById('det-brand-badge').innerText = p.brand;
+            document.getElementById('det-name').innerText = p.name;
+            document.getElementById('det-desc-top').innerText = p.desc;
+            
+            document.getElementById('detail-action-box').innerHTML = `
+                <div style="display:flex; align-items:center; gap:15px; margin-bottom:10px;">
+                    <span style="font-size:1.5rem; font-weight:800; color:var(--blue-dark);">Bs. ${p.price.toFixed(2)}</span>
+                    <span class="stock-tag ${stockClass}">${stockText}</span>
+                </div>
+                <div class="qty-box">
+                    <button class="qty-btn" onclick="stepQty('det-view', -1)">-</button>
+                    <input type="number" id="qty-grid-det-view" value="${hasStock?1:0}" class="qty-val" readonly>
+                    <button class="qty-btn" onclick="stepQty('det-view', 1)">+</button>
+                </div>
+                <button class="btn-add-blue ${!hasStock?'btn-disabled':''}" 
+                        onclick="addToCart(${p.id}, document.getElementById('qty-grid-det-view').value)"
+                        ${!hasStock?'disabled':''}>
+                    ${hasStock ? 'AÑADIR AL PEDIDO' : 'SIN STOCK'}
+                </button>
+            `;
+
+            switchTab('tab-desc');
+
+            const bulletContainer = document.getElementById('det-bullet-list');
+            bulletContainer.innerHTML = p.bullets.map(b => {
+                const parts = b.split(':');
+                return `<li><b>${parts[0]}:</b>${parts[1] || ''}</li>`;
+            }).join('');
+
+            const tableContainer = document.getElementById('det-tech-table');
+            let tableHTML = '';
+            for (const [key, value] of Object.entries(p.specs)) {
+                tableHTML += `<tr><td class="label-td">${key}</td><td class="value-td">${value}</td></tr>`;
+            }
+            tableContainer.innerHTML = tableHTML;
+            
+            const waBtn = document.getElementById('det-wa-btn');
+            if(!hasStock) {
+                waBtn.style.background = '#cbd5e1';
+                waBtn.onclick = null;
+                waBtn.querySelector('span:last-child').innerText = 'PRODUCTO SIN STOCK';
+            } else {
+                waBtn.style.background = 'var(--green-wa)';
+                waBtn.onclick = () => {
+                    const cant = document.getElementById('qty-grid-det-view').value;
+                    const text = encodeURIComponent(`Hola Creactivo, me interesa el producto: ${p.name} (SKU: ${p.sku}) en la marca ${p.brand}. Deseo consultar disponibilidad para ${cant} unidad(es).`);
+                    window.open(`https://wa.me/59178225338?text=${text}`, '_blank');
+                };
+                waBtn.querySelector('span:last-child').innerText = 'Consultar Disponibilidad';
+            }
+
+            navigateTo('detail');
+        }
+
+        function stepQty(uid, amount) {
+            const el = document.getElementById(`qty-grid-${uid}`);
+            if (!el) return;
+            let val = parseInt(el.value) + amount;
+            if (val < 1) val = 1;
+            el.value = val;
+        }
+
+        function toggleCart(show) {
+            const side = document.getElementById('sidebar-cart');
+            if(show) side.classList.add('active');
+            else side.classList.remove('active');
+        }
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            if(tabId === 'tab-desc') document.getElementById('btn-tab-desc').classList.add('active');
+            if(tabId === 'tab-specs') document.getElementById('btn-tab-specs').classList.add('active');
+        }
+
+        /* LOGICA DE NEGOCIO INTERNA PARA EL MANEJO DEL CARRITO */
+        function addToCart(id, qty) {
+            const p = products.find(prod => prod.id === id);
+            if (!p || p.stock <= 0) return;
+            
+            const cant = parseInt(qty) || 1;
+            const existing = cart.find(item => item.id === id);
+            
+            if (existing) {
+                existing.qty += cant;
+            } else {
+                cart.push({ id: p.id, name: p.name, price: p.price, img: p.img, sku: p.sku, qty: cant });
+            }
+            
+            localStorage.setItem('creactivo_cart', JSON.stringify(cart));
+            updateUI();
+            toggleCart(true);
+        }
+
+        function removeFromCart(id) {
+            cart = cart.filter(item => item.id !== id);
+            localStorage.setItem('creactivo_cart', JSON.stringify(cart));
+            updateUI();
+        }
+
+        function updateUI() {
+            // Contador badge superior
+            const totalItems = cart.reduce((acc, item) => acc + item.qty, 0);
+            document.getElementById('cart-count').innerText = totalItems;
+
+            // Renderizar lista lateral de items
+            const container = document.getElementById('cart-items-container');
+            if (cart.length === 0) {
+                container.innerHTML = `<p style="text-align:center; color:var(--text-dim); margin-top:40px; font-size:0.9rem;">Tu lista de pedido está vacía.</p>`;
+            } else {
+                container.innerHTML = cart.map(item => `
+                    <div class="cart-item">
+                        <img src="${item.img}" alt="${item.name}">
+                        <div style="flex:1; text-align:left;">
+                            <h5 style="font-size:0.8rem; font-weight:700; color:var(--blue-dark); display:-webkit-box; -webkit-line-clamp:1; -webkit-box-orient:vertical; overflow:hidden;">${item.name}</h5>
+                            <span style="font-size:0.7rem; color:var(--text-dim); display:block;">SKU: ${item.sku}</span>
+                            <span style="font-size:0.8rem; font-weight:800; color:var(--accent-premium);">${item.qty}x Bs. ${item.price.toFixed(2)}</span>
+                        </div>
+                        <i class="fas fa-trash-alt" onclick="removeFromCart(${item.id})" style="color:#ef4444; cursor:pointer; font-size:0.9rem; padding:5px;"></i>
+                    </div>
+                `).join('');
+            }
+
+            // Calculo e impresión de totales comerciales
+            const totalMoney = cart.reduce((acc, item) => acc + (item.price * item.qty), 0);
+            document.getElementById('totalLabel').innerText = `Bs. ${totalMoney.toFixed(2)}`;
+
+            // Sistema dinámico de la barra de metas de envío internacional
+            const targetGoal = 2000;
+            const percentage = Math.min((totalMoney / targetGoal) * 100, 100);
+            const fillBar = document.getElementById('progFill');
+            const txtLabel = document.getElementById('progText');
+            
+            if(fillBar && txtLabel) {
+                fillBar.style.width = `${percentage}%`;
+                if(totalMoney >= targetGoal) {
+                    txtLabel.innerText = `¡Meta Alcanzada! Envío Mayorista Asegurado`;
+                    txtLabel.style.color = 'var(--success)';
+                } else {
+                    txtLabel.innerText = `Faltan Bs. ${(targetGoal - totalMoney).toFixed(2)} para liberar el despacho`;
+                    txtLabel.style.color = 'var(--text-dark)';
+                }
+            }
+        }
+
+        function sendWhatsAppOrder() {
+            if(cart.length === 0) {
+                alert('Añada productos al pedido antes de proceder con el envío.');
+                return;
+            }
+            
+            let message = `*SOLICITUD DE PEDIDO - CREACTIVO*\n`;
+            message += `----------------------------------------\n`;
+            
+            cart.forEach((item, index) => {
+                message += `${index + 1}. ${item.name}\n`;
+                message += `   *SKU:* ${item.sku} | *Cant:* ${item.qty}\n`;
+                message += `   *Subtotal:* Bs. ${(item.price * item.qty).toFixed(2)}\n\n`;
+            });
+            
+            const totalMoney = cart.reduce((acc, item) => acc + (item.price * item.qty), 0);
+            message += `----------------------------------------\n`;
+            message += `*TOTAL ESTIMADO:* Bs. ${totalMoney.toFixed(2)}\n\n`;
+            message += `Por favor, confírmenme los tiempos de despacho y costos finales de importación.`;
+            
+            window.open(`https://wa.me/59178225338?text=${encodeURIComponent(message)}`, '_blank');
+        }
+
+        // Inicializar vistas al completar la carga estructural del documento
+        window.addEventListener('DOMContentLoaded', () => {
+            initGrids();
+        });
+    </script>
+</body>
+</html>
