@@ -8,7 +8,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- Librería externa para el efecto de confeti -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     
     <style>
@@ -92,7 +91,7 @@
 
         /* CONTROL MULTIPÁGINA */
         .page-section { display: none; }
-        .page-section.active { display: block; padding-bottom: 80px; }
+        .page-section.active { display: block; }
 
         /* BANNERS PRINCIPALES */
         .hero { 
@@ -142,7 +141,7 @@
         .stock-low { background: #fee2e2; color: #991b1b; }
         .stock-none { background: #f1f5f9; color: #475569; }
 
-        /* SELECTORES DE CANTIDAD NATIVOS DE TU WEB */
+        /* SELECTORES DE CANTIDAD */
         .qty-box { display: flex; align-items: center; background: var(--bg-light); border-radius: 6px; border: 1px solid var(--border-color); margin-bottom: 10px; overflow: hidden; }
         .qty-btn { flex: 1; padding: 10px; border: none; background: transparent; cursor: pointer; font-weight: 800; color: var(--blue-dark); }
         .qty-btn:hover { background: #e2e8f0; }
@@ -183,6 +182,7 @@
         
         .actions-block { display: flex; flex-direction: column; gap: 12px; margin-bottom: 35px; }
         .btn-pdf { background: #0f172a; color: white; padding: 14px 24px; border: none; border-radius: 6px; font-weight: 700; display: inline-flex; align-items: center; gap: 10px; cursor: pointer; font-size: 0.85rem; width: fit-content; text-transform: uppercase; letter-spacing: 0.5px; }
+        .btn-pdf:hover { background: #1e293b; }
         .btn-wa-consult { background: var(--green-wa); color: white; padding: 14px 28px; border: none; border-radius: 50px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 12px; cursor: pointer; width: fit-content; font-size: 1rem; box-shadow: 0 4px 12px rgba(37, 211, 102, 0.25); }
 
         /* TABS */
@@ -204,13 +204,13 @@
         .tech-table td.label-td { font-weight: 700; color: #334155; width: 35%; }
         .tech-table td.value-td { color: #64748b; }
 
-        /* CARRITO / BOLSA LATERAL */
+        /* CARRITO LATERAL */
         .sidebar-cart { position: fixed; top: 0; right: -100%; width: 100%; max-width: 380px; height: 100vh; background: white; z-index: 4000; transition: 0.3s; padding: 25px; display: flex; flex-direction: column; box-shadow: -5px 0 15px rgba(0,0,0,0.05); border-left: 1px solid var(--border-color); }
         .sidebar-cart.active { right: 0; }
         .cart-item { display: flex; gap: 12px; margin-bottom: 12px; padding: 12px; background: var(--bg-light); border-radius: 8px; align-items: center; border: 1px solid var(--border-color); }
         .cart-item img { width: 45px; height: 45px; object-fit: contain; }
 
-        /* --- NUEVO: ESTILO MODAL CELEBRACIÓN AJUSTADO A TU MARCA --- */
+        /* MODAL CELEBRACIÓN */
         .pantalla-celebracion {
             position: fixed; inset: 0; background-color: rgba(15, 23, 42, 0.95);
             display: flex; justify-content: center; align-items: center;
@@ -229,6 +229,44 @@
         .btn-celebracion-cerrar { background-color: var(--blue-corp); color: #fff; border: none; padding: 14px 35px; font-size: 0.85rem; font-weight: 700; text-transform: uppercase; border-radius: 4px; cursor: pointer; transition: background 0.2s; letter-spacing: 0.5px; }
         .btn-celebracion-cerrar:hover { background-color: var(--blue-dark); }
 
+        /* --- ESTILO PIE DE PÁGINA (FOOTER) --- */
+        footer {
+            background-color: var(--blue-dark);
+            color: #ffffff;
+            padding: 50px 5% 30px;
+            margin-top: 60px;
+            border-top: 3px solid var(--accent-premium);
+        }
+        .footer-container {
+            display: grid;
+            grid-template-columns: 2fr repeat(2, 1fr);
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .footer-brand h3 { font-size: 1.3rem; font-weight: 800; letter-spacing: 1px; margin-bottom: 15px; }
+        .footer-brand p { font-size: 0.85rem; color: #94a3b8; line-height: 1.6; max-width: 320px; }
+        .footer-links h4 { font-size: 0.9rem; font-weight: 700; text-transform: uppercase; margin-bottom: 18px; color: #f8fafc; letter-spacing: 0.5px; }
+        .footer-links ul { list-style: none; }
+        .footer-links ul li { margin-bottom: 10px; }
+        .footer-links ul li a { color: #94a3b8; text-decoration: none; font-size: 0.85rem; transition: color 0.2s; cursor: pointer; }
+        .footer-links ul li a:hover { color: #ffffff; }
+        
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 40px auto 0;
+            padding-top: 20px;
+            border-top: 1px solid #1e293b;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.75rem;
+            color: #64748b;
+        }
+        .footer-socials { display: flex; gap: 15px; }
+        .footer-socials a { color: #94a3b8; font-size: 1.1rem; transition: color 0.2s; }
+        .footer-socials a:hover { color: var(--accent-premium); }
+
         /* RESPONSIVO */
         @media (max-width: 1024px) {
             .premium-grid { grid-template-columns: repeat(3, 1fr); }
@@ -242,6 +280,13 @@
             .detail-left, .detail-right { width: 100%; }
             .hamburger-menu { display: block; }
             .mobile-tab-bar { display: flex; }
+            .desktop-search-wrapper { display: none !important; }
+            
+            /* Ajuste de márgenes del Footer para que la Tab Bar móvil no tape el contenido */
+            footer { padding-bottom: 95px; }
+            .footer-container { grid-template-columns: 1fr; gap: 30px; text-align: center; }
+            .footer-brand p { margin: 0 auto; }
+            .footer-bottom { flex-direction: column; gap: 15px; text-align: center; }
         }
         @media (max-width: 480px) {
             .premium-grid, .catalog-products-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 10px !important; }
@@ -262,8 +307,9 @@
                 <h3>Categorías</h3>
                 <i class="fas fa-times close-btn" onclick="toggleDrawer(false)"></i>
             </div>
-            <div class="drawer-search">
-                <input type="text" placeholder="Buscar productos...">
+            <div class="drawer-search" style="position: relative;">
+                <input type="text" id="search-mobile" placeholder="Buscar productos..." oninput="ejecutarBusqueda(this.value)">
+                <i class="fas fa-times" id="clear-mobile" onclick="limpiarBusqueda()" style="position: absolute; right: 32px; top: 50%; transform: translateY(-50%); cursor: pointer; color: var(--text-dim); display: none;"></i>
             </div>
             <ul class="drawer-menu">
                 <li class="active" id="m-cat-all" onclick="filterCategoryMobile('all')">Ver Todo <span>&gt;</span></li>
@@ -278,6 +324,12 @@
             <i class="fas fa-bars hamburger-menu" onclick="toggleDrawer(true)"></i>
             <div class="logo" onclick="navigateTo('home')">CREACTIVO</div>
         </div>
+        
+        <div class="desktop-search-wrapper" style="flex: 1; max-width: 400px; margin: 0 20px; position: relative;">
+            <input type="text" id="search-desktop" placeholder="Buscar productos..." oninput="ejecutarBusqueda(this.value)" style="width: 100%; padding: 10px 35px 10px 14px; border: 1px solid var(--border-color); border-radius: 6px; font-family: inherit; font-size: 0.85rem; background: var(--bg-light);">
+            <i class="fas fa-times" id="clear-desktop" onclick="limpiarBusqueda()" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); cursor: pointer; color: var(--text-dim); display: none;"></i>
+        </div>
+
         <ul class="nav-links">
             <li><a id="link-home" class="active" onclick="navigateTo('home')">Inicio</a></li>
             <li><a id="link-new" onclick="navigateTo('new')">Lo Nuevo</a></li>
@@ -422,6 +474,39 @@
         </div>
     </div>
 
+    <footer>
+        <div class="footer-container">
+            <div class="footer-brand">
+                <h3>CREACTIVO</h3>
+                <p>Especialistas en equipamiento premium, mochilas tácticas, urbanas y sistemas de viaje de alta gama para profesionales exigentes.</p>
+            </div>
+            <div class="footer-links">
+                <h4>Navegación</h4>
+                <ul>
+                    <li><a onclick="navigateTo('home')">Inicio</a></li>
+                    <li><a onclick="navigateTo('new')">Lo Nuevo</a></li>
+                    <li><a onclick="navigateTo('catalog')">Catálogo de Productos</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h4>Envíos & Logística</h4>
+                <ul>
+                    <li><a onclick="alert('Envíos rápidos a nivel nacional coordinados de forma directa.')">Envíos Nacionales</a></li>
+                    <li><a onclick="alert('Los pedidos que superen los Bs. 2000 cuentan con cobertura de envío completamente gratis.')">Cobertura Gratis (Bs. 2000)</a></li>
+                    <li><a onclick="navigateTo('catalog')">Garantía de Importación</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div>&copy; 2026 CREACTIVO. Todos los derechos reservados.</div>
+            <div class="footer-socials">
+                <a href="https://wa.me/591XXXXXXXX" target="_blank"><i class="fab fa-whatsapp"></i></a>
+                <a href="#" onclick="alert('Próximamente enlace a redes sociales')"><i class="fab fa-instagram"></i></a>
+                <a href="#" onclick="alert('Próximamente enlace a catálogo expandido')"><i class="fas fa-globe"></i></a>
+            </div>
+        </div>
+    </footer>
+
     <div class="sidebar-cart" id="sidebar-cart">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
             <h3 style="font-weight: 800;">Lista de Pedido</h3>
@@ -439,7 +524,6 @@
         </div>
     </div>
 
-    <!-- NUEVO: VENTANA EMERGENTE DE ENVÍO GRATIS -->
     <div class="pantalla-celebracion" id="modal-celebracion">
         <div class="cuadro-celebracion">
             <h2>¡Envío Gratis! 🎉</h2>
@@ -493,9 +577,7 @@
         let currentBrand = 'all';
         let intervaloConfeti;
         const META_ENVIO = 2000;
-
-        // CONTROL PARA QUE EL POPUP NO SE REPITA
-let envioGratisMostrado = false;
+        let envioGratisMostrado = false;
 
         window.addEventListener('popstate', function (event) {
             const drawer = document.getElementById('mobile-drawer');
@@ -556,7 +638,6 @@ let envioGratisMostrado = false;
             navigateTo('catalog');
         }
 
-        // --- SISTEMA DEL CARRO E INTERFAZ DINÁMICA ---
         function initStore() {
             renderGrids();
             actualizarProgresoEnvio();
@@ -623,7 +704,7 @@ let envioGratisMostrado = false;
             const input = document.getElementById(`qty-${uniqueId}`);
             const qty = input ? parseInt(input.value) : 1;
             addToCart(productId, qty);
-            if(input) input.value = 1; // Resetea a 1 despues de añadir
+            if(input) input.value = 1;
         }
 
         function addToCart(productId, qty) {
@@ -699,67 +780,32 @@ let envioGratisMostrado = false;
             if(container) container.innerHTML = html || '<p style="text-align:center; color:gray; padding:20px; font-size:0.85rem;">La lista está vacía</p>';
         }
 
-       function actualizarProgresoEnvio() {
+        function actualizarProgresoEnvio() {
+            let total = 0;
+            cart.forEach(item => {
+                const p = products.find(prod => prod.id === item.id);
+                if(p) total += p.price * item.qty;
+            });
 
-    let total = 0;
+            const fill = document.getElementById('progFill');
+            const text = document.getElementById('progText');
+            if(!fill || !text) return;
 
-    cart.forEach(item => {
+            const porcentaje = Math.min((total / META_ENVIO) * 100, 100);
+            fill.style.width = porcentaje + '%';
 
-        const p = products.find(prod => prod.id === item.id);
-
-        if(p) {
-            total += p.price * item.qty;
+            if(total >= META_ENVIO) {
+                text.innerHTML = `<span style="color:var(--success); font-weight:800;"><i class="fas fa-truck"></i> ¡ENVÍO GRATIS ASEGURADO!</span>`;
+                if(!envioGratisMostrado) {
+                    envioGratisMostrado = true;
+                    dispararLluviaConfeti();
+                }
+            } else {
+                const faltante = META_ENVIO - total;
+                text.innerHTML = `Te faltan <strong>Bs. ${faltante.toFixed(2)}</strong> para Envío Gratis`;
+                envioGratisMostrado = false;
+            }
         }
-
-    });
-
-    const fill = document.getElementById('progFill');
-    const text = document.getElementById('progText');
-
-    if(!fill || !text) return;
-
-    const porcentaje = Math.min(
-        (total / META_ENVIO) * 100,
-        100
-    );
-
-    fill.style.width = porcentaje + '%';
-
-    // YA TIENE ENVÍO GRATIS
-    if(total >= META_ENVIO) {
-
-        text.innerHTML = `
-            <span style="color:var(--success); font-weight:800;">
-                <i class="fas fa-truck"></i>
-                ¡ENVÍO GRATIS ASEGURADO!
-            </span>
-        `;
-
-        // SOLO UNA VEZ
-        if(!envioGratisMostrado) {
-
-            envioGratisMostrado = true;
-
-            dispararLluviaConfeti();
-        }
-
-    }
-
-    // TODAVÍA NO LLEGA
-    else {
-
-        const faltante = META_ENVIO - total;
-
-        text.innerHTML = `
-            Te faltan
-            <strong>Bs. ${faltante.toFixed(2)}</strong>
-            para Envío Gratis
-        `;
-
-        // RESET SOLO SI BAJA DE LA META
-        envioGratisMostrado = false;
-    }
-}
 
         function dispararLluviaConfeti() {
             document.getElementById('modal-celebracion').classList.add('activo');
@@ -772,6 +818,34 @@ let envioGratisMostrado = false;
         function cerrarCelebracion() {
             document.getElementById('modal-celebracion').classList.remove('activo');
             clearInterval(intervaloConfeti);
+        }
+
+        // --- SISTEMA DE BUSCADOR GLOBAL ---
+        let textoBusqueda = '';
+
+        function ejecutarBusqueda(valor) {
+            textoBusqueda = valor.toLowerCase().trim();
+
+            const inputDesktop = document.getElementById('search-desktop');
+            const inputMobile = document.getElementById('search-mobile');
+            if(inputDesktop) inputDesktop.value = valor;
+            if(inputMobile) inputMobile.value = valor;
+
+            const btnClearDesk = document.getElementById('clear-desktop');
+            const btnClearMob = document.getElementById('clear-mobile');
+            if(btnClearDesk) btnClearDesk.style.display = textoBusqueda ? 'block' : 'none';
+            if(btnClearMob) btnClearMob.style.display = textoBusqueda ? 'block' : 'none';
+
+            const vistaActual = document.querySelector('.page-section.active');
+            if (textoBusqueda && vistaActual && vistaActual.id !== 'view-catalog' && vistaActual.id !== 'view-detail') {
+                navigateTo('catalog');
+            }
+
+            filterCatalogUI();
+        }
+
+        function limpiarBusqueda() {
+            ejecutarBusqueda('');
         }
 
         // --- FILTROS DE CATÁLOGO ---
@@ -800,10 +874,20 @@ let envioGratisMostrado = false;
             if(!container) return;
 
             let filtered = products;
+            
             if(currentCategory !== 'all') filtered = filtered.filter(p => p.category === currentCategory);
             if(currentBrand !== 'all') filtered = filtered.filter(p => p.brand === currentBrand);
 
-            container.innerHTML = filtered.map(p => generatePremiumCard(p, 'catalog')).join('') || '<p style="padding:20px; color:gray;">No se encontraron productos.</p>';
+            if(textoBusqueda) {
+                filtered = filtered.filter(p => 
+                    p.name.toLowerCase().includes(textoBusqueda) ||
+                    p.sku.toLowerCase().includes(textoBusqueda) ||
+                    p.brand.toLowerCase().includes(textoBusqueda) ||
+                    p.desc.toLowerCase().includes(textoBusqueda)
+                );
+            }
+
+            container.innerHTML = filtered.map(p => generatePremiumCard(p, 'catalog')).join('') || '<p style="padding:20px; color:gray; grid-column: span 3; text-align:center;">No se encontraron productos coincidentes.</p>';
         }
 
         // --- PÁGINA DE DETALLE DE PRODUCTO ---
@@ -825,7 +909,6 @@ let envioGratisMostrado = false;
             }
             document.getElementById('det-tech-table').innerHTML = tableHtml;
 
-            // Selector dinámico de cantidad en detalle
             const hasStock = p.stock > 0;
             document.getElementById('detail-action-box').innerHTML = `
                 <div class="qty-box">
@@ -838,10 +921,9 @@ let envioGratisMostrado = false;
                 </button>
             `;
 
-            // Configurar WhatsApp individual
             document.getElementById('det-wa-btn').onclick = function() {
                 const text = encodeURIComponent(`Hola Creactivo, solicito información sobre el producto corporativo SKU: ${p.sku} - ${p.name}`);
-                window.open(`https://wa.me/591XXXXXXXX?text=${text}`, '_blank'); // Reemplaza por tu número de Bolivia
+                window.open(`https://wa.me/59175179990?text=${text}`, '_blank');
             };
 
             navigateTo('detail');
@@ -869,7 +951,7 @@ let envioGratisMostrado = false;
             document.getElementById(tabId).classList.add('active');
         }
 
-        // --- SALIDA WHATSAPP GLOBAL EN BOLIVIA ---
+        // --- SALIDA WHATSAPP GLOBAL ---
         function sendWhatsAppOrder() {
             if(cart.length === 0) return alert('Tu lista de pedido está vacía.');
             
@@ -886,14 +968,14 @@ let envioGratisMostrado = false;
                 }
             });
 
-            message += `*TOTAL ESTIMADO: Bs. ${total.toFixed(2)}*\n`;
+            message += `*TOTAL ESTIMADO: Bs. ${total.toFixed(2)}*\\n`;
             if(total >= META_ENVIO) message += `_¡Aplica para Envío Gratis de Importación!_ 🚚`;
 
-            const cleanNumber = "591XXXXXXXX"; // Pon tu WhatsApp real de Bolivia aquí
+            const cleanNumber = "59175179990";
             window.open(`https://wa.me/${cleanNumber}?text=${encodeURIComponent(message)}`, '_blank');
         }
 
-        // INICIALIZACIÓN COMPLETA AL CARGAR
+        // INICIALIZACIÓN
         document.addEventListener("DOMContentLoaded", function() {
             initStore();
             renderCartUI();
