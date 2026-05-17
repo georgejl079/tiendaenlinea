@@ -38,9 +38,58 @@
         .cart-icon-wrapper { position: relative; cursor: pointer; font-size: 1.2rem; color: var(--blue-dark); }
         .badge { position: absolute; top: -7px; right: -10px; background: var(--blue-dark); color: white; font-size: 0.65rem; padding: 2px 6px; border-radius: 50%; font-weight: 700; }
 
+        /* ICONO HAMBURGUESA PARA MÓVIL (Oculto en PC) */
+        .hamburger-menu { display: none; font-size: 1.3rem; color: var(--blue-dark); cursor: pointer; }
+
+        /* BARRA INFERIOR MÓVIL (TAB BAR) */
+        .mobile-tab-bar {
+            position: fixed; bottom: 0; left: 0; right: 0; height: 65px;
+            background: #ffffff; border-top: 1px solid var(--border-color);
+            display: none; justify-content: space-around; align-items: center;
+            z-index: 1010; box-shadow: 0 -4px 12px rgba(0,0,0,0.05);
+        }
+        .tab-item {
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            color: var(--text-dim); text-decoration: none; font-size: 0.7rem; font-weight: 700;
+            text-transform: uppercase; cursor: pointer; width: 100%; h-full; gap: 4px;
+        }
+        .tab-item.active { color: var(--blue-dark); }
+        .tab-item i { font-size: 1.2rem; }
+
+        /* MENÚ LATERAL DESPLEGABLE MÓVIL (DRAWER) */
+        .mobile-drawer {
+            position: fixed; top: 0; left: -100%; width: 100%; height: 100vh;
+            z-index: 3000; display: flex; transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .mobile-drawer.active { left: 0; }
+        .drawer-overlay { position: absolute; inset: 0; background: rgba(15, 23, 42, 0.5); backdrop-filter: blur(2px); }
+        .drawer-content {
+            position: relative; width: 80%; max-width: 300px; height: 100%;
+            background: #ffffff; box-shadow: 5px 0 25px rgba(0,0,0,0.15);
+            display: flex; flex-direction: column; z-index: 10;
+        }
+        .drawer-header {
+            padding: 20px; border-bottom: 1px solid var(--border-color);
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .drawer-header h3 { font-size: 1rem; font-weight: 800; color: var(--blue-dark); text-transform: uppercase; }
+        .drawer-header .close-btn { font-size: 1.3rem; color: var(--text-dim); cursor: pointer; }
+        .drawer-search { padding: 15px 20px; border-bottom: 1px solid var(--border-color); }
+        .drawer-search input {
+            width: 100%; padding: 10px 14px; border: 1px solid var(--border-color);
+            border-radius: 6px; font-family: inherit; font-size: 0.85rem; background: var(--bg-light);
+        }
+        .drawer-menu { flex: 1; overflow-y: auto; list-style: none; padding: 10px 0; }
+        .drawer-menu li {
+            padding: 14px 20px; font-size: 0.85rem; font-weight: 700;
+            text-transform: uppercase; color: var(--text-dark); border-bottom: 1px solid #f8fafc;
+            cursor: pointer; display: flex; justify-content: space-between; align-items: center;
+        }
+        .drawer-menu li:hover, .drawer-menu li.active { background: var(--bg-light); color: var(--accent-premium); }
+
         /* CONTROL MULTIPÁGINA */
         .page-section { display: none; }
-        .page-section.active { display: block; }
+        .page-section.active { display: block; padding-bottom: 80px; } /* Añadido pb para que el menú inferior no tape contenido */
 
         /* BANNERS PRINCIPALES */
         .hero { 
@@ -76,7 +125,7 @@
         
         /* ETIQUETAS SKU Y BADGES */
         .sku-tag { position: absolute; top: 12px; right: 12px; background: rgba(15, 23, 42, 0.75); color: white; padding: 3px 8px; border-radius: 4px; font-size: 0.6rem; font-weight: 700; z-index: 10; letter-spacing: 0.5px; }
-        .card-badge { position: absolute; top: 12px; left: 12px; background: var(--accent-premium); color: white; font-size: 0.6rem; font-weight: 700; padding: 4px 10px; border-radius: 4px; text-transform: uppercase; z-index: 10; }
+        .card-badge { position: absolute; top: 12px; left: 12px; background: var(--accent-premium); color: white; font-size: 0.6------rem; font-weight: 700; padding: 4px 10px; border-radius: 4px; text-transform: uppercase; z-index: 10; }
         .badge-promo { position: absolute; top: 12px; left: 12px; background: var(--promo); color: white; font-size: 0.6rem; font-weight: 700; padding: 4px 10px; border-radius: 4px; text-transform: uppercase; z-index: 10; }
         
         .premium-info { padding: 15px 5px; text-align: left; }
@@ -153,7 +202,7 @@
         .tech-table td.value-td { color: #64748b; }
 
         /* CARRITO / BOLSA LATERAL */
-        .sidebar-cart { position: fixed; top: 0; right: -100%; width: 100%; max-width: 380px; height: 100vh; background: white; z-index: 2000; transition: 0.3s; padding: 25px; display: flex; flex-direction: column; box-shadow: -5px 0 15px rgba(0,0,0,0.05); border-left: 1px solid var(--border-color); }
+        .sidebar-cart { position: fixed; top: 0; right: -100%; width: 100%; max-width: 380px; height: 100vh; background: white; z-index: 4000; transition: 0.3s; padding: 25px; display: flex; flex-direction: column; box-shadow: -5px 0 15px rgba(0,0,0,0.05); border-left: 1px solid var(--border-color); }
         .sidebar-cart.active { right: 0; }
         .cart-item { display: flex; gap: 12px; margin-bottom: 12px; padding: 12px; background: var(--bg-light); border-radius: 8px; align-items: center; border: 1px solid var(--border-color); }
         .cart-item img { width: 45px; height: 45px; object-fit: contain; }
@@ -169,6 +218,10 @@
             .premium-grid, .catalog-products-grid { grid-template-columns: repeat(2, 1fr); gap: 15px; padding: 15px 3% 30px; }
             .product-detail-view { flex-direction: column; gap: 30px; }
             .detail-left, .detail-right { width: 100%; }
+            
+            /* Activación de barras móviles */
+            .hamburger-menu { display: block; }
+            .mobile-tab-bar { display: flex; }
         }
         @media (max-width: 480px) {
             .premium-grid, .catalog-products-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 10px !important; }
@@ -182,8 +235,29 @@
 </head>
 <body>
 
+    <div id="mobile-drawer" class="mobile-drawer">
+        <div class="drawer-overlay" onclick="toggleDrawer(false)"></div>
+        <div class="drawer-content">
+            <div class="drawer-header">
+                <h3>Categorías</h3>
+                <i class="fas fa-times close-btn" onclick="toggleDrawer(false)"></i>
+            </div>
+            <div class="drawer-search">
+                <input type="text" placeholder="Buscar productos...">
+            </div>
+            <ul class="drawer-menu">
+                <li class="active" id="m-cat-all" onclick="filterCategoryMobile('all')">Ver Todo <span>&gt;</span></li>
+                <li id="m-cat-Urbana" onclick="filterCategoryMobile('Urbana')">Mochilas Urbanas <span>&gt;</span></li>
+                <li id="m-cat-Viaje" onclick="filterCategoryMobile('Viaje')">Equipaje de Viaje <span>&gt;</span></li>
+            </ul>
+        </div>
+    </div>
+
     <nav>
-        <div class="logo" onclick="navigateTo('home')">CREACTIVO</div>
+        <div style="display:flex; align-items:center; gap:15px;">
+            <i class="fas fa-bars hamburger-menu" onclick="toggleDrawer(true)"></i>
+            <div class="logo" onclick="navigateTo('home')">CREACTIVO</div>
+        </div>
         <ul class="nav-links">
             <li><a id="link-home" class="active" onclick="navigateTo('home')">Inicio</a></li>
             <li><a id="link-new" onclick="navigateTo('new')">Lo Nuevo</a></li>
@@ -194,6 +268,21 @@
             <span class="badge" id="cart-count">0</span>
         </div>
     </nav>
+
+    <div class="mobile-tab-bar">
+        <div id="tab-home" class="tab-item active" onclick="navigateTo('home')">
+            <i class="fas fa-home"></i>
+            <span>Inicio</span>
+        </div>
+        <div id="tab-catalog" class="tab-item" onclick="navigateTo('catalog')">
+            <i class="fas fa-th-large"></i>
+            <span>Tienda</span>
+        </div>
+        <div id="tab-cart" class="tab-item" onclick="toggleCart(true)">
+            <i class="fas fa-shopping-bag"></i>
+            <span>Carro</span>
+        </div>
+    </div>
 
     <div id="view-home" class="page-section active">
         <header class="hero">
@@ -337,9 +426,9 @@
                 name: 'CyberPack Pro Antirrobo Smart USB', price: 295.00, badge: 'Top Ventas', 
                 desc: 'Mochila ergonómica de seguridad ejecutiva con revestimiento impermeable y compartimento blindado independiente.', 
                 bullets: [
-                    'Seguridad Inteligente: Cremalleras ocultas en el espaldar para evitar robos accidentales.',
-                    'Puerto Integrado: Conector exterior USB para enlazar cómodamente baterías portátiles.',
-                    'Estructura Oxford: Tela de alta densidad 100% resistente a cortes y rasgaduras.'
+                    'Security Inteligente: Cremalleras ocultas en el espaldar para evitar robos.',
+                    'Puerto Integrado: Conector exterior USB para enlazar cómodamente baterías.',
+                    'Estructura Oxford: Tela de alta densidad 100% resistente a cortes.'
                 ],
                 specs: { 'Capacidad': '25 Litros', 'Compartimento Laptop': 'Hasta 16 pulgadas', 'Material Exterior': 'Poliéster Oxford 600D', 'Dimensiones': '45 x 30 x 15 cm' },
                 img: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?q=80&w=600' 
@@ -347,11 +436,11 @@
             { 
                 id: 2, section: 'tech', brand: 'Vinta', category: 'Urbana', sku: 'VT-9902', stock: 4, wholesale: 305.00, promo: true,
                 name: 'Minimalist Leather RollTop Premium', price: 340.00, badge: 'Oferta', 
-                desc: 'Diseño elegante y enrollable con finas terminaciones en cuero vegano y herrajes metálicos mate.', 
+                desc: 'Diseño elegante y enrollable con finas terminaciones en cuero vegano.', 
                 bullets: [
-                    'Volumen Expandible: Cierre RollTop superior que adapta la capacidad según la necesidad.',
-                    'Acceso Lateral Directo: Permite extraer la laptop de forma rápida sin abrir la mochila.',
-                    'Estética Corporativa: Ideal tanto para reuniones ejecutivas como para traslados diarios.'
+                    'Volumen Expandible: Cierre RollTop superior que adapta la capacidad.',
+                    'Acceso Lateral Directo: Extrae la laptop de forma rápida.',
+                    'Estética Corporativa: Ideal para reuniones y traslados.'
                 ],
                 specs: { 'Capacidad': '20 a 30 Litros', 'Material': 'Cuero vegano texturizado', 'Repelencia al agua': 'Certificación IPX4', 'Peso vacío': '0.9 kg' },
                 img: 'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?q=80&w=600' 
@@ -359,32 +448,84 @@
             { 
                 id: 3, section: 'adventure', brand: 'Nordic', category: 'Viaje', sku: 'ND-4480', stock: 5, wholesale: 420.00, promo: false,
                 name: 'Maleta Rígida Adventure Pro Expandible', price: 480.00, badge: 'Nuevo', 
-                desc: 'Maleta de alta gama estructural con ruedas multidireccionales silenciosas de giro completo.', 
+                desc: 'Maleta de alta gama estructural con ruedas multidireccionales.', 
                 bullets: [
-                    'Movilidad Fluida: Cuenta con 4 ruedas dobles con rodamientos reforzados de 360 grados.',
-                    'Cerradura TSA: Sistema de seguridad numérica homologada para aeropuertos.',
-                    'Organización Interna: Compartimentos divisorios de malla con cintas elásticas de sujeción.'
+                    'Movilidad Fluida: Ruedas dobles con rodamientos reforzados 360°.',
+                    'Cerradura TSA: Sistema de seguridad numérica homologada.',
+                    'Organización Interna: Compartimentos divisorios de malla.'
                 ],
-                specs: { 'Tamaño': '24 Pulgadas (Mediana)', 'Carcasa Exterior': 'Policarbonato ABS de alto impacto', 'Peso Neto': '3.2 kg', 'Tipo de Cierre': 'Cremallera reforzada anti-explosión' },
+                specs: { 'Tamaño': '24 Pulgadas', 'Carcasa Exterior': 'Policarbonato ABS', 'Peso Neto': '3.2 kg' },
                 img: 'https://images.unsplash.com/photo-1565026057447-bc90a3dceb87?q=80&w=600' 
             }
         ];
 
-        // SISTEMA DE PERSISTENCIA: Cargar datos guardados previamente
         let cart = JSON.parse(localStorage.getItem('creactivo_cart')) || [];
         let currentCategory = 'all';
         let currentBrand = 'all';
 
+        // LÓGICA DE HISTORIAL PARA EL BOTÓN ATRÁS EN CELULARES
+        window.addEventListener('popstate', function (event) {
+            const drawer = document.getElementById('mobile-drawer');
+            const cartMenu = document.getElementById('sidebar-cart');
+
+            // Si el menú lateral o el carro están activos, se cierran y evitamos salir de la página
+            if (drawer.classList.contains('active') || cartMenu.classList.contains('active')) {
+                drawer.classList.remove('active');
+                cartMenu.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
+        });
+
         function navigateTo(viewId) {
             document.querySelectorAll('.page-section').forEach(p => p.classList.remove('active'));
             document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+            document.querySelectorAll('.mobile-tab-bar .tab-item').forEach(t => t.classList.remove('active'));
             
             document.getElementById(`view-${viewId}`).classList.add('active');
+            
             const link = document.getElementById(`link-${viewId}`);
             if(link) link.classList.add('active');
+
+            const tab = document.getElementById(`tab-${viewId}`);
+            if(tab) tab.classList.add('active');
+
             window.scrollTo(0,0);
         }
 
+        // CONTROLADORES DE MENÚS CON REGISTRO DE HISTORIAL (`pushState`)
+        function toggleDrawer(open) {
+            const drawer = document.getElementById('mobile-drawer');
+            if (open) {
+                drawer.classList.add('active');
+                document.body.style.overflow = 'hidden';
+                history.pushState({ drawerOpen: true }, ""); // Estado artificial
+            } else {
+                drawer.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
+        }
+
+        function toggleCart(open) {
+            const cartMenu = document.getElementById('sidebar-cart');
+            if (open) {
+                cartMenu.classList.add('active');
+                document.body.style.overflow = 'hidden';
+                history.pushState({ cartOpen: true }, ""); // Estado artificial
+            } else {
+                cartMenu.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
+        }
+
+        function filterCategoryMobile(cat) {
+            filterCategory(cat);
+            document.querySelectorAll('.drawer-menu li').forEach(li => li.classList.remove('active'));
+            document.getElementById(`m-cat-${cat}`).classList.add('active');
+            toggleDrawer(false);
+            navigateTo('catalog');
+        }
+
+        // FUNCIONES GENERALES DEL CATÁLOGO
         function generatePremiumCard(p, ctxUnique = '') {
             const hasStock = p.stock > 0;
             const stockClass = !hasStock ? 'stock-none' : (p.stock <= 5 ? 'stock-low' : 'stock-high');
@@ -424,10 +565,7 @@
         function initGrids() {
             document.getElementById('home-tech-grid').innerHTML = products.filter(p => p.section === 'tech').map(p => generatePremiumCard(p, 'home-tech')).join('');
             document.getElementById('home-adventure-grid').innerHTML = products.filter(p => p.section === 'adventure').map(p => generatePremiumCard(p, 'home-adv')).join('');
-            
-            // Renderizado automático de la sección "Lo Nuevo" (Filtrando tags "Nuevo" u ofertas activas)
             document.getElementById('new-products-grid').innerHTML = products.filter(p => p.badge === 'Nuevo' || p.promo === true).map(p => generatePremiumCard(p, 'new')).join('');
-            
             renderCatalogGrid();
             updateUI();
         }
@@ -445,7 +583,8 @@
             currentBrand = 'all';
             document.querySelectorAll('.cat-list li').forEach(li => li.classList.remove('active'));
             document.querySelectorAll('.brand-box').forEach(b => b.classList.remove('active'));
-            document.getElementById(`cat-${cat}`).classList.add('active');
+            const desktopCat = document.getElementById(`cat-${cat}`);
+            if(desktopCat) desktopCat.classList.add('active');
             renderCatalogGrid();
         }
 
@@ -457,6 +596,76 @@
             document.getElementById(`cat-all`).classList.add('active');
             document.getElementById(`brand-${brand}`).classList.add('active');
             renderCatalogGrid();
+        }
+
+        function stepQty(id, change) {
+            const input = document.getElementById(`qty-grid-${id}`);
+            let val = parseInt(input.value) + change;
+            if(val < 1) val = 1;
+            input.value = val;
+        }
+
+        function addToCart(id, qty) {
+            const p = products.find(prod => prod.id === id);
+            qty = parseInt(qty);
+            const existing = cart.find(item => item.id === id);
+            if(existing) {
+                existing.qty += qty;
+            } else {
+                cart.push({ id: p.id, name: p.name, price: p.price, img: p.img, qty: qty });
+            }
+            updateUI();
+            toggleCart(true);
+        }
+
+        function updateCartQty(id, change) {
+            const item = cart.find(i => i.id === id);
+            if(item) {
+                item.qty += change;
+                if(item.qty <= 0) cart = cart.filter(i => i.id !== id);
+            }
+            updateUI();
+        }
+
+        function updateUI() {
+            localStorage.setItem('creactivo_cart', JSON.stringify(cart));
+            const count = cart.reduce((acc, item) => acc + item.qty, 0);
+            document.getElementById('cart-count').innerText = count;
+
+            const container = document.getElementById('cart-items-container');
+            const totalLabel = document.getElementById('totalLabel');
+            
+            let total = 0;
+            container.innerHTML = cart.map(item => {
+                total += item.price * item.qty;
+                return `
+                    <div class="cart-item">
+                        <img src="${item.img}">
+                        <div style="flex:1;">
+                            <h5 style="font-size:0.8rem; font-weight:700;">${item.name}</h5>
+                            <span style="font-size:0.75rem; color:var(--text-dim);">Bs. ${item.price.toFixed(2)} x ${item.qty}</span>
+                        </div>
+                        <div style="display:flex; gap:5px;">
+                            <button onclick="updateCartQty(${item.id}, -1)" style="padding:4px 8px; border:1px solid #ccc; background:#fff; border-radius:4px; font-weight:800;">-</button>
+                            <button onclick="updateCartQty(${item.id}, 1)" style="padding:4px 8px; border:1px solid #ccc; background:#fff; border-radius:4px; font-weight:800;">+</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            
+            totalLabel.innerText = `Bs. ${total.toFixed(2)}`;
+
+            // Barra de progreso de envío simulada
+            const fill = document.getElementById('progFill');
+            const txt = document.getElementById('progText');
+            let pct = (total / 2000) * 100;
+            if(pct > 100) pct = 100;
+            if(fill) fill.style.width = `${pct}%`;
+            if(txt) {
+                if(total === 0) txt.innerText = 'Añade productos para activar envío gratis';
+                else if(total < 2000) txt.innerText = `Faltan Bs. ${(2000 - total).toFixed(2)} para envío gratuito`;
+                else txt.innerText = '¡Felicidades! Tienes envío gratuito asegurado';
+            }
         }
 
         function openDetails(id) {
@@ -506,144 +715,37 @@
                 tableHTML += `<tr><td class="label-td">${key}</td><td class="value-td">${value}</td></tr>`;
             }
             tableContainer.innerHTML = tableHTML;
-            
-            const waBtn = document.getElementById('det-wa-btn');
-            if(!hasStock) {
-                waBtn.style.background = '#cbd5e1';
-                waBtn.onclick = null;
-                waBtn.querySelector('span:last-child').innerText = 'PRODUCTO SIN STOCK';
-            } else {
-                waBtn.style.background = 'var(--green-wa)';
-                waBtn.onclick = () => {
-                    const cant = document.getElementById('qty-grid-det-view').value;
-                    const text = encodeURIComponent(`Hola Creactivo, me interesa el producto: ${p.name} (SKU: ${p.sku}) en la marca ${p.brand}. Deseo consultar disponibilidad para ${cant} unidad(es).`);
-                    window.open(`https://wa.me/59178225338?text=${text}`, '_blank');
-                };
-                waBtn.querySelector('span:last-child').innerText = 'Consultar Disponibilidad';
-            }
+
+            // Enlace de consulta individual WhatsApp
+            document.getElementById('det-wa-btn').onclick = function() {
+                const text = encodeURIComponent(`Hola, me interesa conocer la disponibilidad mayorista del producto: ${p.name} (SKU: ${p.sku})`);
+                window.open(`https://wa.me/591XXXXXXXX?text=${text}`, '_blank'); // Cambia XXXXXXXX por tu número
+            };
 
             navigateTo('detail');
         }
 
-        function stepQty(uid, amount) {
-            const el = document.getElementById(`qty-grid-${uid}`);
-            if (!el) return;
-            let val = parseInt(el.value) + amount;
-            if (val < 1) val = 1;
-            el.value = val;
-        }
-
-        function toggleCart(show) {
-            const side = document.getElementById('sidebar-cart');
-            if(show) side.classList.add('active');
-            else side.classList.remove('active');
-        }
-
         function switchTab(tabId) {
-            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            document.getElementById(`btn-${tabId}`).classList.add('active');
             document.getElementById(tabId).classList.add('active');
-            if(tabId === 'tab-desc') document.getElementById('btn-tab-desc').classList.add('active');
-            if(tabId === 'tab-specs') document.getElementById('btn-tab-specs').classList.add('active');
-        }
-
-        /* LOGICA DE NEGOCIO INTERNA PARA EL MANEJO DEL CARRITO */
-        function addToCart(id, qty) {
-            const p = products.find(prod => prod.id === id);
-            if (!p || p.stock <= 0) return;
-            
-            const cant = parseInt(qty) || 1;
-            const existing = cart.find(item => item.id === id);
-            
-            if (existing) {
-                existing.qty += cant;
-            } else {
-                cart.push({ id: p.id, name: p.name, price: p.price, img: p.img, sku: p.sku, qty: cant });
-            }
-            
-            localStorage.setItem('creactivo_cart', JSON.stringify(cart));
-            updateUI();
-            toggleCart(true);
-        }
-
-        function removeFromCart(id) {
-            cart = cart.filter(item => item.id !== id);
-            localStorage.setItem('creactivo_cart', JSON.stringify(cart));
-            updateUI();
-        }
-
-        function updateUI() {
-            // Contador badge superior
-            const totalItems = cart.reduce((acc, item) => acc + item.qty, 0);
-            document.getElementById('cart-count').innerText = totalItems;
-
-            // Renderizar lista lateral de items
-            const container = document.getElementById('cart-items-container');
-            if (cart.length === 0) {
-                container.innerHTML = `<p style="text-align:center; color:var(--text-dim); margin-top:40px; font-size:0.9rem;">Tu lista de pedido está vacía.</p>`;
-            } else {
-                container.innerHTML = cart.map(item => `
-                    <div class="cart-item">
-                        <img src="${item.img}" alt="${item.name}">
-                        <div style="flex:1; text-align:left;">
-                            <h5 style="font-size:0.8rem; font-weight:700; color:var(--blue-dark); display:-webkit-box; -webkit-line-clamp:1; -webkit-box-orient:vertical; overflow:hidden;">${item.name}</h5>
-                            <span style="font-size:0.7rem; color:var(--text-dim); display:block;">SKU: ${item.sku}</span>
-                            <span style="font-size:0.8rem; font-weight:800; color:var(--accent-premium);">${item.qty}x Bs. ${item.price.toFixed(2)}</span>
-                        </div>
-                        <i class="fas fa-trash-alt" onclick="removeFromCart(${item.id})" style="color:#ef4444; cursor:pointer; font-size:0.9rem; padding:5px;"></i>
-                    </div>
-                `).join('');
-            }
-
-            // Calculo e impresión de totales comerciales
-            const totalMoney = cart.reduce((acc, item) => acc + (item.price * item.qty), 0);
-            document.getElementById('totalLabel').innerText = `Bs. ${totalMoney.toFixed(2)}`;
-
-            // Sistema dinámico de la barra de metas de envío internacional
-            const targetGoal = 2000;
-            const percentage = Math.min((totalMoney / targetGoal) * 100, 100);
-            const fillBar = document.getElementById('progFill');
-            const txtLabel = document.getElementById('progText');
-            
-            if(fillBar && txtLabel) {
-                fillBar.style.width = `${percentage}%`;
-                if(totalMoney >= targetGoal) {
-                    txtLabel.innerText = `¡Meta Alcanzada! Envío Mayorista Asegurado`;
-                    txtLabel.style.color = 'var(--success)';
-                } else {
-                    txtLabel.innerText = `Faltan Bs. ${(targetGoal - totalMoney).toFixed(2)} para liberar el despacho`;
-                    txtLabel.style.color = 'var(--text-dark)';
-                }
-            }
         }
 
         function sendWhatsAppOrder() {
-            if(cart.length === 0) {
-                alert('Añada productos al pedido antes de proceder con el envío.');
-                return;
-            }
-            
-            let message = `*SOLICITUD DE PEDIDO - CREACTIVO*\n`;
-            message += `----------------------------------------\n`;
-            
-            cart.forEach((item, index) => {
-                message += `${index + 1}. ${item.name}\n`;
-                message += `   *SKU:* ${item.sku} | *Cant:* ${item.qty}\n`;
-                message += `   *Subtotal:* Bs. ${(item.price * item.qty).toFixed(2)}\n\n`;
+            if(cart.length === 0) return alert('El carrito está vacío.');
+            let msg = `*NUEVO PEDIDO - CREACTIVO*\n\n`;
+            let total = 0;
+            cart.forEach(item => {
+                msg += `• ${item.name} (x${item.qty}) - Bs. ${(item.price * item.qty).toFixed(2)}\n`;
+                total += item.price * item.qty;
             });
-            
-            const totalMoney = cart.reduce((acc, item) => acc + (item.price * item.qty), 0);
-            message += `----------------------------------------\n`;
-            message += `*TOTAL ESTIMADO:* Bs. ${totalMoney.toFixed(2)}\n\n`;
-            message += `Por favor, confírmenme los tiempos de despacho y costos finales de importación.`;
-            
-            window.open(`https://wa.me/59178225338?text=${encodeURIComponent(message)}`, '_blank');
+            msg += `\n*Total del Pedido:* Bs. ${total.toFixed(2)}`;
+            window.open(`https://wa.me/591XXXXXXXX?text=${encodeURIComponent(msg)}`, '_blank'); // Cambia XXXXXXXX por tu número
         }
 
-        // Inicializar vistas al completar la carga estructural del documento
-        window.addEventListener('DOMContentLoaded', () => {
-            initGrids();
-        });
+        // Inicializar la aplicación al cargar
+        window.onload = initGrids;
     </script>
 </body>
 </html>
