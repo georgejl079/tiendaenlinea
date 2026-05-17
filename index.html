@@ -8,6 +8,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
+    <!-- Librería externa para el efecto de confeti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    
     <style>
         :root {
             --blue-corp: #1e293b; 
@@ -51,7 +54,7 @@
         .tab-item {
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             color: var(--text-dim); text-decoration: none; font-size: 0.7rem; font-weight: 700;
-            text-transform: uppercase; cursor: pointer; width: 100%; h-full; gap: 4px;
+            text-transform: uppercase; cursor: pointer; width: 100%; height: 100%; gap: 4px;
         }
         .tab-item.active { color: var(--blue-dark); }
         .tab-item i { font-size: 1.2rem; }
@@ -89,7 +92,7 @@
 
         /* CONTROL MULTIPÁGINA */
         .page-section { display: none; }
-        .page-section.active { display: block; padding-bottom: 80px; } /* Añadido pb para que el menú inferior no tape contenido */
+        .page-section.active { display: block; padding-bottom: 80px; }
 
         /* BANNERS PRINCIPALES */
         .hero { 
@@ -125,7 +128,7 @@
         
         /* ETIQUETAS SKU Y BADGES */
         .sku-tag { position: absolute; top: 12px; right: 12px; background: rgba(15, 23, 42, 0.75); color: white; padding: 3px 8px; border-radius: 4px; font-size: 0.6rem; font-weight: 700; z-index: 10; letter-spacing: 0.5px; }
-        .card-badge { position: absolute; top: 12px; left: 12px; background: var(--accent-premium); color: white; font-size: 0.6------rem; font-weight: 700; padding: 4px 10px; border-radius: 4px; text-transform: uppercase; z-index: 10; }
+        .card-badge { position: absolute; top: 12px; left: 12px; background: var(--accent-premium); color: white; font-size: 0.6rem; font-weight: 700; padding: 4px 10px; border-radius: 4px; text-transform: uppercase; z-index: 10; }
         .badge-promo { position: absolute; top: 12px; left: 12px; background: var(--promo); color: white; font-size: 0.6rem; font-weight: 700; padding: 4px 10px; border-radius: 4px; text-transform: uppercase; z-index: 10; }
         
         .premium-info { padding: 15px 5px; text-align: left; }
@@ -139,7 +142,7 @@
         .stock-low { background: #fee2e2; color: #991b1b; }
         .stock-none { background: #f1f5f9; color: #475569; }
 
-        /* SELECTORES DE CANTIDAD */
+        /* SELECTORES DE CANTIDAD NATIVOS DE TU WEB */
         .qty-box { display: flex; align-items: center; background: var(--bg-light); border-radius: 6px; border: 1px solid var(--border-color); margin-bottom: 10px; overflow: hidden; }
         .qty-btn { flex: 1; padding: 10px; border: none; background: transparent; cursor: pointer; font-weight: 800; color: var(--blue-dark); }
         .qty-btn:hover { background: #e2e8f0; }
@@ -207,6 +210,25 @@
         .cart-item { display: flex; gap: 12px; margin-bottom: 12px; padding: 12px; background: var(--bg-light); border-radius: 8px; align-items: center; border: 1px solid var(--border-color); }
         .cart-item img { width: 45px; height: 45px; object-fit: contain; }
 
+        /* --- NUEVO: ESTILO MODAL CELEBRACIÓN AJUSTADO A TU MARCA --- */
+        .pantalla-celebracion {
+            position: fixed; inset: 0; background-color: rgba(15, 23, 42, 0.95);
+            display: flex; justify-content: center; align-items: center;
+            z-index: 99999; opacity: 0; pointer-events: none; transition: opacity 0.4s ease;
+        }
+        .pantalla-celebracion.activo { opacity: 1; pointer-events: auto; }
+        .cuadro-celebracion {
+            background: #ffffff; padding: 40px 30px; border-radius: 16px;
+            text-align: center; max-width: 420px; width: 90%;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3); transform: scale(0.8);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .pantalla-celebracion.activo .cuadro-celebracion { transform: scale(1); }
+        .cuadro-celebracion h2 { color: var(--accent-premium); font-size: 2rem; font-weight: 800; margin-bottom: 12px; }
+        .cuadro-celebracion p { font-size: 1rem; color: var(--text-dark); line-height: 1.5; margin-bottom: 25px; }
+        .btn-celebracion-cerrar { background-color: var(--blue-corp); color: #fff; border: none; padding: 14px 35px; font-size: 0.85rem; font-weight: 700; text-transform: uppercase; border-radius: 4px; cursor: pointer; transition: background 0.2s; letter-spacing: 0.5px; }
+        .btn-celebracion-cerrar:hover { background-color: var(--blue-dark); }
+
         /* RESPONSIVO */
         @media (max-width: 1024px) {
             .premium-grid { grid-template-columns: repeat(3, 1fr); }
@@ -218,8 +240,6 @@
             .premium-grid, .catalog-products-grid { grid-template-columns: repeat(2, 1fr); gap: 15px; padding: 15px 3% 30px; }
             .product-detail-view { flex-direction: column; gap: 30px; }
             .detail-left, .detail-right { width: 100%; }
-            
-            /* Activación de barras móviles */
             .hamburger-menu { display: block; }
             .mobile-tab-bar { display: flex; }
         }
@@ -419,6 +439,15 @@
         </div>
     </div>
 
+    <!-- NUEVO: VENTANA EMERGENTE DE ENVÍO GRATIS -->
+    <div class="pantalla-celebracion" id="modal-celebracion">
+        <div class="cuadro-celebracion">
+            <h2>¡Envío Gratis! 🎉</h2>
+            <p>Tu pedido ha alcanzado el monto mínimo de <strong>Bs. 2000</strong>. ¡Creactivo cubre el costo de envío de tus productos!</p>
+            <button class="btn-celebracion-cerrar" onclick="cerrarCelebracion()">Estupendo</button>
+        </div>
+    </div>
+
     <script>
         const products = [
             { 
@@ -462,13 +491,15 @@
         let cart = JSON.parse(localStorage.getItem('creactivo_cart')) || [];
         let currentCategory = 'all';
         let currentBrand = 'all';
+        let intervaloConfeti;
+        const META_ENVIO = 2000;
 
-        // LÓGICA DE HISTORIAL PARA EL BOTÓN ATRÁS EN CELULARES
+        // CONTROL PARA QUE EL POPUP NO SE REPITA
+let envioGratisMostrado = false;
+
         window.addEventListener('popstate', function (event) {
             const drawer = document.getElementById('mobile-drawer');
             const cartMenu = document.getElementById('sidebar-cart');
-
-            // Si el menú lateral o el carro están activos, se cierran y evitamos salir de la página
             if (drawer.classList.contains('active') || cartMenu.classList.contains('active')) {
                 drawer.classList.remove('active');
                 cartMenu.classList.remove('active');
@@ -492,13 +523,12 @@
             window.scrollTo(0,0);
         }
 
-        // CONTROLADORES DE MENÚS CON REGISTRO DE HISTORIAL (`pushState`)
         function toggleDrawer(open) {
             const drawer = document.getElementById('mobile-drawer');
             if (open) {
                 drawer.classList.add('active');
                 document.body.style.overflow = 'hidden';
-                history.pushState({ drawerOpen: true }, ""); // Estado artificial
+                history.pushState({ drawerOpen: true }, "");
             } else {
                 drawer.classList.remove('active');
                 document.body.style.overflow = 'auto';
@@ -510,7 +540,7 @@
             if (open) {
                 cartMenu.classList.add('active');
                 document.body.style.overflow = 'hidden';
-                history.pushState({ cartOpen: true }, ""); // Estado artificial
+                history.pushState({ cartOpen: true }, "");
             } else {
                 cartMenu.classList.remove('active');
                 document.body.style.overflow = 'auto';
@@ -520,12 +550,31 @@
         function filterCategoryMobile(cat) {
             filterCategory(cat);
             document.querySelectorAll('.drawer-menu li').forEach(li => li.classList.remove('active'));
-            document.getElementById(`m-cat-${cat}`).classList.add('active');
+            const mobileLi = document.getElementById(`m-cat-${cat}`);
+            if(mobileLi) mobileLi.classList.add('active');
             toggleDrawer(false);
             navigateTo('catalog');
         }
 
-        // FUNCIONES GENERALES DEL CATÁLOGO
+        // --- SISTEMA DEL CARRO E INTERFAZ DINÁMICA ---
+        function initStore() {
+            renderGrids();
+            actualizarProgresoEnvio();
+        }
+
+        function renderGrids() {
+            const techGrid = document.getElementById('home-tech-grid');
+            const advGrid = document.getElementById('home-adventure-grid');
+            const newGrid = document.getElementById('new-products-grid');
+            const catGrid = document.getElementById('catalog-products-grid');
+
+            if(techGrid) techGrid.innerHTML = products.filter(p => p.section === 'tech').map(p => generatePremiumCard(p, 'tech')).join('');
+            if(advGrid) advGrid.innerHTML = products.filter(p => p.section === 'adventure').map(p => generatePremiumCard(p, 'adv')).join('');
+            if(newGrid) newGrid.innerHTML = products.map(p => generatePremiumCard(p, 'new')).join('');
+            
+            filterCatalogUI();
+        }
+
         function generatePremiumCard(p, ctxUnique = '') {
             const hasStock = p.stock > 0;
             const stockClass = !hasStock ? 'stock-none' : (p.stock <= 5 ? 'stock-low' : 'stock-high');
@@ -534,218 +583,321 @@
             const uniqueId = `${ctxUnique}-${p.id}`;
 
             return `
-                <div class="premium-card" onclick="openDetails(${p.id})" style="${!hasStock ? 'opacity: 0.7;' : ''}">
+                <div class="premium-card">
                     <span class="sku-tag">${p.sku}</span>
-                    <div class="premium-img-box">
-                        <span class="${badgeClass}">${p.badge}</span>
+                    ${p.badge ? `<span class="${badgeClass}">${p.badge}</span>` : ''}
+                    <div class="premium-img-box" onclick="showProductDetail(${p.id})">
                         <img src="${p.img}" alt="${p.name}">
                     </div>
                     <div class="premium-info">
-                        <h4>${p.name}</h4>
+                        <span class="premium-brand-tag">${p.brand}</span>
+                        <h4 onclick="showProductDetail(${p.id})">${p.name}</h4>
                         <div class="premium-prices">
                             <span class="p-current">Bs. ${p.price.toFixed(2)}</span>
-                            <span class="stock-tag ${stockClass}">${stockText}</span>
                         </div>
-                        <div class="qty-box" onclick="event.stopPropagation();">
-                            <button class="qty-btn" onclick="stepQty('${uniqueId}', -1)" ${!hasStock?'disabled':''}>-</button>
-                            <input type="number" id="qty-grid-${uniqueId}" value="${hasStock?1:0}" class="qty-val" readonly>
-                            <button class="qty-btn" onclick="stepQty('${uniqueId}', 1)" ${!hasStock?'disabled':''}>+</button>
+                        <span class="stock-tag ${stockClass}">${stockText}</span>
+                        
+                        <div class="qty-box" style="margin-top:10px;">
+                            <button class="qty-btn" onclick="changeCardQty('${uniqueId}', -1)">-</button>
+                            <input type="number" class="qty-val" id="qty-${uniqueId}" value="1" min="1" max="${p.stock}" readonly>
+                            <button class="qty-btn" onclick="changeCardQty('${uniqueId}', 1)">+</button>
                         </div>
-                        <span class="premium-brand-tag">${p.brand} • ${p.category}</span>
-                        <button class="btn-add-blue ${!hasStock?'btn-disabled':''}" 
-                                onclick="event.stopPropagation(); addToCart(${p.id}, document.getElementById('qty-grid-${uniqueId}').value)"
-                                ${!hasStock?'disabled':''}>
-                            ${hasStock ? 'AÑADIR AL CARRITO' : 'SIN STOCK'}
+
+                        <button class="btn-add-blue ${!hasStock ? 'btn-disabled' : ''}" ${!hasStock ? 'disabled' : ''} onclick="addToCartFromCard(${p.id}, '${uniqueId}')">
+                            ${hasStock ? 'Añadir al pedido' : 'Sin Stock'}
                         </button>
                     </div>
                 </div>
             `;
         }
 
-        function initGrids() {
-            document.getElementById('home-tech-grid').innerHTML = products.filter(p => p.section === 'tech').map(p => generatePremiumCard(p, 'home-tech')).join('');
-            document.getElementById('home-adventure-grid').innerHTML = products.filter(p => p.section === 'adventure').map(p => generatePremiumCard(p, 'home-adv')).join('');
-            document.getElementById('new-products-grid').innerHTML = products.filter(p => p.badge === 'Nuevo' || p.promo === true).map(p => generatePremiumCard(p, 'new')).join('');
-            renderCatalogGrid();
-            updateUI();
-        }
-
-        function renderCatalogGrid() {
-            const filtered = products.filter(p => {
-                return (currentCategory === 'all' || p.category === currentCategory) && 
-                       (currentBrand === 'all' || p.brand === currentBrand);
-            });
-            document.getElementById('catalog-products-grid').innerHTML = filtered.map(p => generatePremiumCard(p, 'catalog')).join('');
-        }
-
-        function filterCategory(cat) {
-            currentCategory = cat; 
-            currentBrand = 'all';
-            document.querySelectorAll('.cat-list li').forEach(li => li.classList.remove('active'));
-            document.querySelectorAll('.brand-box').forEach(b => b.classList.remove('active'));
-            const desktopCat = document.getElementById(`cat-${cat}`);
-            if(desktopCat) desktopCat.classList.add('active');
-            renderCatalogGrid();
-        }
-
-        function filterBrand(brand) {
-            currentBrand = brand; 
-            currentCategory = 'all';
-            document.querySelectorAll('.cat-list li').forEach(li => li.classList.remove('active'));
-            document.querySelectorAll('.brand-box').forEach(b => b.classList.remove('active'));
-            document.getElementById(`cat-all`).classList.add('active');
-            document.getElementById(`brand-${brand}`).classList.add('active');
-            renderCatalogGrid();
-        }
-
-        function stepQty(id, change) {
-            const input = document.getElementById(`qty-grid-${id}`);
+        function changeCardQty(uniqueId, change) {
+            const input = document.getElementById(`qty-${uniqueId}`);
+            if(!input) return;
             let val = parseInt(input.value) + change;
-            if(val < 1) val = 1;
-            input.value = val;
+            const max = parseInt(input.getAttribute('max'));
+            if(val >= 1 && val <= max) input.value = val;
         }
 
-        function addToCart(id, qty) {
-            const p = products.find(prod => prod.id === id);
-            qty = parseInt(qty);
-            const existing = cart.find(item => item.id === id);
+        function addToCartFromCard(productId, uniqueId) {
+            const input = document.getElementById(`qty-${uniqueId}`);
+            const qty = input ? parseInt(input.value) : 1;
+            addToCart(productId, qty);
+            if(input) input.value = 1; // Resetea a 1 despues de añadir
+        }
+
+        function addToCart(productId, qty) {
+            const prod = products.find(p => p.id === productId);
+            if(!prod || prod.stock <= 0) return;
+
+            const existing = cart.find(item => item.id === productId);
             if(existing) {
-                existing.qty += qty;
+                if(existing.qty + qty <= prod.stock) {
+                    existing.qty += qty;
+                } else {
+                    existing.qty = prod.stock;
+                }
             } else {
-                cart.push({ id: p.id, name: p.name, price: p.price, img: p.img, qty: qty });
+                cart.push({ id: productId, qty: qty });
             }
-            updateUI();
-            toggleCart(true);
+            saveAndRefreshCart();
         }
 
-        function updateCartQty(id, change) {
-            const item = cart.find(i => i.id === id);
-            if(item) {
-                item.qty += change;
-                if(item.qty <= 0) cart = cart.filter(i => i.id !== id);
+        function changeCartQty(productId, change) {
+            const prod = products.find(p => p.id === productId);
+            const item = cart.find(item => item.id === productId);
+            if(!item || !prod) return;
+
+            item.qty += change;
+            if(item.qty <= 0) {
+                cart = cart.filter(i => i.id !== productId);
+            } else if (item.qty > prod.stock) {
+                item.qty = prod.stock;
             }
-            updateUI();
+            saveAndRefreshCart();
         }
 
-        function updateUI() {
+        function saveAndRefreshCart() {
             localStorage.setItem('creactivo_cart', JSON.stringify(cart));
-            const count = cart.reduce((acc, item) => acc + item.qty, 0);
-            document.getElementById('cart-count').innerText = count;
+            renderCartUI();
+            actualizarProgresoEnvio();
+        }
 
+        function renderCartUI() {
+            const countElem = document.getElementById('cart-count');
             const container = document.getElementById('cart-items-container');
             const totalLabel = document.getElementById('totalLabel');
             
-            let total = 0;
-            container.innerHTML = cart.map(item => {
-                total += item.price * item.qty;
-                return `
-                    <div class="cart-item">
-                        <img src="${item.img}">
-                        <div style="flex:1;">
-                            <h5 style="font-size:0.8rem; font-weight:700;">${item.name}</h5>
-                            <span style="font-size:0.75rem; color:var(--text-dim);">Bs. ${item.price.toFixed(2)} x ${item.qty}</span>
-                        </div>
-                        <div style="display:flex; gap:5px;">
-                            <button onclick="updateCartQty(${item.id}, -1)" style="padding:4px 8px; border:1px solid #ccc; background:#fff; border-radius:4px; font-weight:800;">-</button>
-                            <button onclick="updateCartQty(${item.id}, 1)" style="padding:4px 8px; border:1px solid #ccc; background:#fff; border-radius:4px; font-weight:800;">+</button>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-            
-            totalLabel.innerText = `Bs. ${total.toFixed(2)}`;
+            let totalItems = 0;
+            let totalPrice = 0;
+            let html = '';
 
-            // Barra de progreso de envío simulada
-            const fill = document.getElementById('progFill');
-            const txt = document.getElementById('progText');
-            let pct = (total / 2000) * 100;
-            if(pct > 100) pct = 100;
-            if(fill) fill.style.width = `${pct}%`;
-            if(txt) {
-                if(total === 0) txt.innerText = 'Añade productos para activar envío gratis';
-                else if(total < 2000) txt.innerText = `Faltan Bs. ${(2000 - total).toFixed(2)} para envío gratuito`;
-                else txt.innerText = '¡Felicidades! Tienes envío gratuito asegurado';
-            }
+            cart.forEach(item => {
+                const p = products.find(prod => prod.id === item.id);
+                if(p) {
+                    totalItems += item.qty;
+                    totalPrice += p.price * item.qty;
+                    html += `
+                        <div class="cart-item">
+                            <img src="${p.img}">
+                            <div style="flex:1;">
+                                <h5 style="font-size:0.8rem; font-weight:700; margin-bottom:4px;">${p.name}</h5>
+                                <span style="font-size:0.75rem; color:var(--accent-premium); font-weight:800;">Bs. ${p.price.toFixed(2)}</span>
+                                <div class="qty-box" style="margin-top:6px; max-width:100px; margin-bottom:0;">
+                                    <button class="qty-btn" style="padding:4px;" onclick="changeCartQty(${p.id}, -1)">-</button>
+                                    <input type="text" class="qty-val" style="width:30px; font-size:0.75rem;" value="${item.qty}" readonly>
+                                    <button class="qty-btn" style="padding:4px;" onclick="changeCartQty(${p.id}, 1)">+</button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+            });
+
+            if(countElem) countElem.innerText = totalItems;
+            if(totalLabel) totalLabel.innerText = `Bs. ${totalPrice.toFixed(2)}`;
+            if(container) container.innerHTML = html || '<p style="text-align:center; color:gray; padding:20px; font-size:0.85rem;">La lista está vacía</p>';
         }
 
-        function openDetails(id) {
+       function actualizarProgresoEnvio() {
+
+    let total = 0;
+
+    cart.forEach(item => {
+
+        const p = products.find(prod => prod.id === item.id);
+
+        if(p) {
+            total += p.price * item.qty;
+        }
+
+    });
+
+    const fill = document.getElementById('progFill');
+    const text = document.getElementById('progText');
+
+    if(!fill || !text) return;
+
+    const porcentaje = Math.min(
+        (total / META_ENVIO) * 100,
+        100
+    );
+
+    fill.style.width = porcentaje + '%';
+
+    // YA TIENE ENVÍO GRATIS
+    if(total >= META_ENVIO) {
+
+        text.innerHTML = `
+            <span style="color:var(--success); font-weight:800;">
+                <i class="fas fa-truck"></i>
+                ¡ENVÍO GRATIS ASEGURADO!
+            </span>
+        `;
+
+        // SOLO UNA VEZ
+        if(!envioGratisMostrado) {
+
+            envioGratisMostrado = true;
+
+            dispararLluviaConfeti();
+        }
+
+    }
+
+    // TODAVÍA NO LLEGA
+    else {
+
+        const faltante = META_ENVIO - total;
+
+        text.innerHTML = `
+            Te faltan
+            <strong>Bs. ${faltante.toFixed(2)}</strong>
+            para Envío Gratis
+        `;
+
+        // RESET SOLO SI BAJA DE LA META
+        envioGratisMostrado = false;
+    }
+}
+
+        function dispararLluviaConfeti() {
+            document.getElementById('modal-celebracion').classList.add('activo');
+            intervaloConfeti = setInterval(function() {
+                confetti({ particleCount: 6, angle: 60, spread: 55, origin: { x: 0, y: 0.85 } });
+                confetti({ particleCount: 6, angle: 120, spread: 55, origin: { x: 1, y: 0.85 } });
+            }, 180);
+        }
+
+        function cerrarCelebracion() {
+            document.getElementById('modal-celebracion').classList.remove('activo');
+            clearInterval(intervaloConfeti);
+        }
+
+        // --- FILTROS DE CATÁLOGO ---
+        function filterCategory(cat) {
+            currentCategory = cat;
+            document.querySelectorAll('.cat-list li').forEach(li => li.classList.remove('active'));
+            const activeLi = document.getElementById(`cat-${cat}`);
+            if(activeLi) activeLi.classList.add('active');
+            filterCatalogUI();
+        }
+
+        function filterBrand(brand) {
+            if(currentBrand === brand) {
+                currentBrand = 'all';
+                document.getElementById(`brand-${brand}`).classList.remove('active');
+            } else {
+                document.querySelectorAll('.brand-box').forEach(b => b.classList.remove('active'));
+                currentBrand = brand;
+                document.getElementById(`brand-${brand}`).classList.add('active');
+            }
+            filterCatalogUI();
+        }
+
+        function filterCatalogUI() {
+            const container = document.getElementById('catalog-products-grid');
+            if(!container) return;
+
+            let filtered = products;
+            if(currentCategory !== 'all') filtered = filtered.filter(p => p.category === currentCategory);
+            if(currentBrand !== 'all') filtered = filtered.filter(p => p.brand === currentBrand);
+
+            container.innerHTML = filtered.map(p => generatePremiumCard(p, 'catalog')).join('') || '<p style="padding:20px; color:gray;">No se encontraron productos.</p>';
+        }
+
+        // --- PÁGINA DE DETALLE DE PRODUCTO ---
+        function showProductDetail(id) {
             const p = products.find(prod => prod.id === id);
-            if (!p) return;
-            
-            const hasStock = p.stock > 0;
-            const stockClass = !hasStock ? 'stock-none' : (p.stock <= 5 ? 'stock-low' : 'stock-high');
-            const stockText = !hasStock ? 'AGOTADO' : (p.stock <= 5 ? `¡ÚLTIMAS ${p.stock}!` : `${p.stock} UNIDADES`);
+            if(!p) return;
 
-            const imgContainer = document.getElementById('detail-img-container');
-            imgContainer.innerHTML = `<span class="sku-tag">${p.sku}</span><img id="det-img" src="${p.img}">`;
-
-            document.getElementById('det-crumbs').innerText = `Inicio / ${p.brand.toUpperCase()} / ${p.category.toUpperCase()}`;
+            document.getElementById('det-img').src = p.img;
+            document.getElementById('det-crumbs').innerText = `Inicio / ${p.category} / ${p.sku}`;
             document.getElementById('det-brand-badge').innerText = p.brand;
             document.getElementById('det-name').innerText = p.name;
             document.getElementById('det-desc-top').innerText = p.desc;
             
+            document.getElementById('det-bullet-list').innerHTML = p.bullets.map(b => `<li>${b}</li>`).join('');
+            
+            let tableHtml = '';
+            for(let key in p.specs) {
+                tableHtml += `<tr><td class="label-td">${key}</td><td class="value-td">${p.specs[key]}</td></tr>`;
+            }
+            document.getElementById('det-tech-table').innerHTML = tableHtml;
+
+            // Selector dinámico de cantidad en detalle
+            const hasStock = p.stock > 0;
             document.getElementById('detail-action-box').innerHTML = `
-                <div style="display:flex; align-items:center; gap:15px; margin-bottom:10px;">
-                    <span style="font-size:1.5rem; font-weight:800; color:var(--blue-dark);">Bs. ${p.price.toFixed(2)}</span>
-                    <span class="stock-tag ${stockClass}">${stockText}</span>
-                </div>
                 <div class="qty-box">
-                    <button class="qty-btn" onclick="stepQty('det-view', -1)">-</button>
-                    <input type="number" id="qty-grid-det-view" value="${hasStock?1:0}" class="qty-val" readonly>
-                    <button class="qty-btn" onclick="stepQty('det-view', 1)">+</button>
+                    <button class="qty-btn" onclick="changeDetailQty(-1)">-</button>
+                    <input type="number" class="qty-val" id="qty-detail" value="1" min="1" max="${p.stock}" readonly>
+                    <button class="qty-btn" onclick="changeDetailQty(1)">+</button>
                 </div>
-                <button class="btn-add-blue ${!hasStock?'btn-disabled':''}" 
-                        onclick="addToCart(${p.id}, document.getElementById('qty-grid-det-view').value)"
-                        ${!hasStock?'disabled':''}>
-                    ${hasStock ? 'AÑADIR AL PEDIDO' : 'SIN STOCK'}
+                <button class="btn-add-blue ${!hasStock ? 'btn-disabled' : ''}" ${!hasStock ? 'disabled' : ''} onclick="addFromDetail(${p.id})">
+                    ${hasStock ? 'Añadir al pedido corporativo' : 'Sin Stock'}
                 </button>
             `;
 
-            switchTab('tab-desc');
-
-            const bulletContainer = document.getElementById('det-bullet-list');
-            bulletContainer.innerHTML = p.bullets.map(b => {
-                const parts = b.split(':');
-                return `<li><b>${parts[0]}:</b>${parts[1] || ''}</li>`;
-            }).join('');
-
-            const tableContainer = document.getElementById('det-tech-table');
-            let tableHTML = '';
-            for (const [key, value] of Object.entries(p.specs)) {
-                tableHTML += `<tr><td class="label-td">${key}</td><td class="value-td">${value}</td></tr>`;
-            }
-            tableContainer.innerHTML = tableHTML;
-
-            // Enlace de consulta individual WhatsApp
+            // Configurar WhatsApp individual
             document.getElementById('det-wa-btn').onclick = function() {
-                const text = encodeURIComponent(`Hola, me interesa conocer la disponibilidad mayorista del producto: ${p.name} (SKU: ${p.sku})`);
-                window.open(`https://wa.me/591XXXXXXXX?text=${text}`, '_blank'); // Cambia XXXXXXXX por tu número
+                const text = encodeURIComponent(`Hola Creactivo, solicito información sobre el producto corporativo SKU: ${p.sku} - ${p.name}`);
+                window.open(`https://wa.me/591XXXXXXXX?text=${text}`, '_blank'); // Reemplaza por tu número de Bolivia
             };
 
             navigateTo('detail');
         }
 
+        function changeDetailQty(change) {
+            const input = document.getElementById('qty-detail');
+            if(!input) return;
+            let val = parseInt(input.value) + change;
+            const max = parseInt(input.getAttribute('max'));
+            if(val >= 1 && val <= max) input.value = val;
+        }
+
+        function addFromDetail(id) {
+            const input = document.getElementById('qty-detail');
+            const qty = input ? parseInt(input.value) : 1;
+            addToCart(id, qty);
+        }
+
         function switchTab(tabId) {
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
             document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            
             document.getElementById(`btn-${tabId}`).classList.add('active');
             document.getElementById(tabId).classList.add('active');
         }
 
+        // --- SALIDA WHATSAPP GLOBAL EN BOLIVIA ---
         function sendWhatsAppOrder() {
-            if(cart.length === 0) return alert('El carrito está vacío.');
-            let msg = `*NUEVO PEDIDO - CREACTIVO*\n\n`;
+            if(cart.length === 0) return alert('Tu lista de pedido está vacía.');
+            
+            let message = "*SOLICITUD DE PEDIDO - CREACTIVO*\n\n";
             let total = 0;
-            cart.forEach(item => {
-                msg += `• ${item.name} (x${item.qty}) - Bs. ${(item.price * item.qty).toFixed(2)}\n`;
-                total += item.price * item.qty;
+
+            cart.forEach((item, idx) => {
+                const p = products.find(prod => prod.id === item.id);
+                if(p) {
+                    const sub = p.price * item.qty;
+                    total += sub;
+                    message += `${idx + 1}. *${p.name}* (${p.sku})\n`;
+                    message += `   Cantidad: ${item.qty} u. | Precio: Bs. ${p.price.toFixed(2)} | Subtotal: Bs. ${sub.toFixed(2)}\n\n`;
+                }
             });
-            msg += `\n*Total del Pedido:* Bs. ${total.toFixed(2)}`;
-            window.open(`https://wa.me/591XXXXXXXX?text=${encodeURIComponent(msg)}`, '_blank'); // Cambia XXXXXXXX por tu número
+
+            message += `*TOTAL ESTIMADO: Bs. ${total.toFixed(2)}*\n`;
+            if(total >= META_ENVIO) message += `_¡Aplica para Envío Gratis de Importación!_ 🚚`;
+
+            const cleanNumber = "591XXXXXXXX"; // Pon tu WhatsApp real de Bolivia aquí
+            window.open(`https://wa.me/${cleanNumber}?text=${encodeURIComponent(message)}`, '_blank');
         }
 
-        // Inicializar la aplicación al cargar
-        window.onload = initGrids;
+        // INICIALIZACIÓN COMPLETA AL CARGAR
+        document.addEventListener("DOMContentLoaded", function() {
+            initStore();
+            renderCartUI();
+        });
     </script>
 </body>
 </html>
